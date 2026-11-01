@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="th" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ปุยใจ (Puijai) - เอกสารรวบรวมแผนภาพวิศวกรรมและตารางผลการวิจัยฉบับสมบูรณ์</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Mermaid.js -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <!-- Google Fonts: Prompt & Sarabun -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Sarabun:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Prompt', 'sans-serif'],
+            body: ['Sarabun', 'sans-serif'],
+          },
+          colors: {
+            line: '#06C755',
+            puijai: {
+              blue: '#5B9BD5',
+              yellow: '#F59E0B',
+              red: '#EF4444',
+              dark: '#1E293B',
+              light: '#F8FAFC'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Prompt', sans-serif; }
+    .content-font { font-family: 'Sarabun', sans-serif; }
+    .mermaid { display: flex; justify-content: center; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-sky-500 selection:text-white">
+
+  <!-- Navigation Bar -->
+  <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur shadow-sm border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16 items-center">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center text-white shadow-md font-bold text-xl">
+            ป
+          </div>
+          <div>
+            <span class="font-bold text-lg text-slate-900 tracking-tight">แชทบอทปุยใจ (Puijai)</span>
+            <span class="text-xs block text-slate-500 font-normal">ระบบตรวจจับจุดเสี่ยงภาวะวิกฤตสุขภาพจิตด้วย WangchanBERTa</span>
+          </div>
+        </div>
+        <div class="hidden md:flex space-x-1 lg:space-x-4 text-sm font-medium text-slate-600">
+          <a href="#overview" class="px-3 py-2 rounded-lg hover:text-sky-600 hover:bg-slate-100 transition">ภาพรวม</a>
+          <a href="#diagrams" class="px-3 py-2 rounded-lg hover:text-sky-600 hover:bg-slate-100 transition">8 แผนภาพวิศวกรรม</a>
+          <a href="#mockups" class="px-3 py-2 rounded-lg hover:text-sky-600 hover:bg-slate-100 transition">UI LINE 3 ระดับ</a>
+          <a href="#charts" class="px-3 py-2 rounded-lg hover:text-sky-600 hover:bg-slate-100 transition">กราฟผลการทดลอง</a>
+          <a href="#tables" class="px-3 py-2 rounded-lg hover:text-sky-600 hover:bg-slate-100 transition">ตารางวิจัยทั้งหมด</a>
+        </div>
+        <a href="#tables" class="bg-sky-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-sky-700 shadow-sm transition flex items-center gap-2">
+          <i class="fa-solid fa-table-list"></i> ดูตารางวิจัย
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Header -->
+  <header id="overview" class="bg-gradient-to-b from-sky-50 via-white to-slate-50 border-b border-slate-200 py-12 md:py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-4xl mx-auto">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-100 text-sky-800 text-xs font-semibold mb-4 border border-sky-200">
+          <i class="fa-solid fa-graduation-cap"></i> ปริญญานิพนธ์วิศวกรรมคอมพิวเตอร์และปัญญาประดิษฐ์ (PIM CEAI 1321205)
+        </div>
+        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 leading-tight">
+          การพัฒนาระบบตรวจจับจุดเสี่ยงภาวะวิกฤตจากบริบทข้อความสนทนาภาษาไทย<br class="hidden sm:inline">
+          ด้วยโมเดล WangchanBERTa สำหรับแชทบอทปุยใจบนแพลตฟอร์ม LINE
+        </h1>
+        <p class="mt-4 text-base sm:text-lg text-slate-600 content-font">
+          สถาบันการจัดการปัญญาภิวัฒน์ • ภาคการศึกษาที่ 1 ปีการศึกษา 2569 (กลุ่มเรียน 1)
+        </p>
+
+        <!-- Author Card -->
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto text-left">
+          <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+            <div class="text-xs text-sky-600 font-semibold uppercase tracking-wider mb-1">AI & Backend Developer</div>
+            <div class="font-bold text-slate-800">1. นายศุภโชค ชมภูพื้น</div>
+            <div class="text-xs text-slate-500 font-mono">รหัส 6752300852</div>
+          </div>
+          <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+            <div class="text-xs text-indigo-600 font-semibold uppercase tracking-wider mb-1">BA, UX/UI & QA Engineer</div>
+            <div class="font-bold text-slate-800">2. นายปภังกร มณีรอด</div>
+            <div class="text-xs text-slate-500 font-mono">รหัส 6752301158</div>
+          </div>
+          <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+            <div class="text-xs text-emerald-600 font-semibold uppercase tracking-wider mb-1">อาจารย์ที่ปรึกษาโครงงาน</div>
+            <div class="font-bold text-slate-800">อาจารย์ สาธิดา สุขพงษ์</div>
+            <div class="text-xs text-slate-500">ที่ปรึกษาหลัก</div>
+          </div>
+        </div>
+
+        <!-- Quick Stat Pills -->
+        <div class="mt-8 flex flex-wrap justify-center gap-3">
+          <span class="inline-flex items-center px-4 py-2 rounded-xl text-sm font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-sm">
+            <i class="fa-solid fa-bullseye mr-2"></i> Crisis Recall: 96.50%
+          </span>
+          <span class="inline-flex items-center px-4 py-2 rounded-xl text-sm font-semibold bg-blue-50 text-blue-700 border border-blue-200 shadow-sm">
+            <i class="fa-solid fa-chart-line mr-2"></i> Crisis F1-Score: 94.82%
+          </span>
+          <span class="inline-flex items-center px-4 py-2 rounded-xl text-sm font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-sm">
+            <i class="fa-solid fa-bolt mr-2"></i> Latency: 56.80 ms
+          </span>
+          <span class="inline-flex items-center px-4 py-2 rounded-xl text-sm font-semibold bg-amber-50 text-amber-700 border border-amber-200 shadow-sm">
+            <i class="fa-solid fa-star mr-2"></i> SUS Score: 84.25 (Grade A)
+          </span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Part 1: All 8 Engineering Diagrams -->
+  <section id="diagrams" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="border-b border-slate-200 pb-5 mb-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div>
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-3">
+          <span class="w-8 h-8 rounded-lg bg-sky-600 text-white flex items-center justify-center text-sm">1</span>
+          แผนภาพวิศวกรรมระบบทั้งหมด 8 แผนภาพ (Mermaid Engineering Diagrams)
+        </h2>
+        <p class="text-slate-500 text-sm mt-1 content-font">
+          แผนผังทางวิศวกรรมที่ใช้ในบทที่ 2 และบทที่ 3 แสดงโครงสร้างทางทฤษฎีและสถาปัตยกรรมการทำงานจริง
+        </p>
+      </div>
+    </div>
+
+    <div class="space-y-10">
+
+      <!-- Fig 2.1 -->
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 overflow-hidden">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
+          <span class="text-xs font-bold text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200">
+            ภาพที่ 2.1 • บทที่ 2
+          </span>
+          <span class="text-xs text-slate-400">Natural Language Processing Pipeline</span>
+        </div>
+        <h3 class="text-lg font-bold text-slate-900 mb-2">
+          ภาพที่ 2.1: แผนผังกระบวนการตัดคำภาษาไทยแบบ newmm ร่วมกับ SentencePiece
+        </h3>
+        <p class="text-slate-600 text-sm mb-6 content-font">
+          แสดงลำดับการแปลงข้อความภาษาไทยตั้งแต่ข้อความดิบ การทำ Normalization การตัดคำด้วย Maximum Matching และการแปลงเป็น Subword IDs ป้อนสู่ WangchanBERTa
+        </p>
+        <div class="bg-slate-50 rounded-xl p-4 overflow-x-auto border border-slate-200/60">
+          <div class="mermaid">
+flowchart LR
+    A["1. ข้อความสนทนาดิบจากผู้ใช้: เหนื่อยยยมาก ไม่อยากตื่นมาเจอพรุ่งนี้แล้ว"] --> B["2. PyThaiNLP Normalization: ลดรูปตัวอักษรซ้ำและช่องว่าง"]
+    B --> C["3. PyThaiNLP Word Segmentation (newmm): ตัดแบ่งขอบเขตคำด้วยพจนานุกรม"]
+    C --> D["4. SentencePiece Tokenizer (25,000 คำย่อย): แปลงเป็น Subword IDs"]
+    D --> E["5. ป้อนเข้าสู่โมเดล WangchanBERTa Encoder"]
+          </div>
+        </div>
+      </div>
+
+      <!-- Fig 2.2 -->
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 overflow-hidden">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
+          <span class="text-xs font-bold text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200">
+            ภาพที่ 2.2 • บทที่ 2
+          </span>
+          <span class="text-xs text-slate-400">Context Management Mechanism</span>
+        </div>
+        <h3 class="text-lg font-bold text-slate-900 mb-2">
+          ภาพที่ 2.2: กลไกการเลื่อนกรอบหน้าต่างข้อมูลบริบท (Sliding Window Context Management)
+        </h3>
+        <p class="text-slate-600 text-sm mb-6 content-font">
+          การจัดการหน้าต่างบริบทสนทนาย้อนหลัง $K=3$ รอบสนทนา และจำกัดความยาวโทเคนไม่เกิน $L=128$ โทเคน เพื่อแก้ปัญหาการตรวจจับสัญญาณวิกฤตแฝง
+        </p>
+        <div class="bg-slate-50 rounded-xl p-4 overflow-x-auto border border-slate-200/60">
+          <div class="mermaid">
+flowchart TD
+    subgraph S1 ["1. ฐานข้อมูลประวัติการสนทนา (Chat Message History)"]
+        M1["ข้อความรอบที่ t-2: งานเยอะมาก เหนื่อยจัง"]
+        M2["ข้อความรอบที่ t-1: รู้สึกตัวเองไม่มีค่าอะไรเลย"]
+        M3["ข้อความรอบที่ t (ล่าสุด): อยากหลับไปตลอดกาล"]
+    end
+    subgraph S2 ["2. กลไกเลื่อนกรอบหน้าต่าง W(K=3, L=128)"]
+        W1["รวบรวมข้อความ K = 3 รอบล่าสุด เชื่อมต่อด้วยโทเคน [SEP]"]
+        W2["คำนวณจำนวนโทเคนรวม: หากเกิน L = 128 ให้ตัดเฉพาะส่วนท้ายสุด (Truncation)"]
+    end
+    subgraph S3 ["3. ผลลัพธ์บริบทพร้อมประมวลผล"]
+        OUT["[CLS] ข้อความ t-2 [SEP] ข้อความ t-1 [SEP] ข้อความ t [SEP]"]
+    end
+    M1 & M2 & M3 --> W1
+    W1 --> W2
+    W2 --> OUT
+          </div>
+        </div>
+      </div>
+
+      <!-- Fig 2.3 -->
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 overflow-hidden">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
+          <span class="text-xs font-bold text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200">
+            ภาพที่ 2.3 • บทที่ 2
+          </span>
+          <span class="text-xs text-slate-400">Model Architecture & Classification Head</span>
+        </div>
+        <h3 class="text-lg font-bold text-slate-900 mb-2">
+          ภาพที่ 2.3: สถาปัตยกรรมโมเดล WangchanBERTa สำหรับการจำแนกความเสี่ยง
+        </h3>
+        <p class="text-slate-600 text-sm mb-6 content-font">
+          โครงสร้างการทำงานภายใน Transformer Encoder 12 ชั้น และ Classification Head ปรับจูนสำหรับคัดกรองความเสี่ยง 3 ระดับ
+        </p>
+        <div class="bg-slate-50 rounded-xl p-4 overflow-x-auto border border-slate-200/60">
+          <div class="mermaid">
+flowchart TD
+    A["เวกเตอร์โทเคนนำเข้าจากหน้าต่างบริบท W(K, L) ขนาดความยาว L = 128 โทเคน"] --> B["Embedding Layer: Token + Position + Segment Embeddings"]
+    B --> C["Transformer Encoder Layer (12 ชั้นประมวลผล, 12 Attention Heads)"]
+    C --> D["Multi-Head Self-Attention: คำนวณน้ำหนักความสัมพันธ์ของคำภาษาไทย"]
+    D --> E["Feed-Forward Neural Network & Layer Normalization"]
+    E --> F["Pooled Output เวกเตอร์ตัวแทนของโทเคน [CLS] ขนาด 768 มิติ"]
+    F --> G["Classification Head: Dropout (0.3) + Linear Layer (768 -> 3 คลาส)"]
+    G --> H["Softmax Layer: คำนวณค่าความน่าจะเป็นของความเสี่ยง 3 ระดับ"]
+          </div>
+        </div>
+      </div>
+
+      <!-- Fig 3.1 -->
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 overflow-hidden">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
+          <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200">
+            ภาพที่ 3.1 • บทที่ 3
+          </span>
+          <span class="text-xs text-slate-400">System Architecture</span>
+        </div>
+        <h3 class="text-lg font-bold text-slate-900 mb-2">
+          ภาพที่ 3.1: สถาปัตยกรรมระบบโดยรวม (System Architecture) ของแชทบอทปุยใจ
+        </h3>
+        <p class="text-slate-600 text-sm mb-6 content-font">
+          การทำงานแบบครบวงจรระหว่าง LINE Messaging API, NGINX Reverse Proxy, FastAPI Backend, PostgreSQL และกลไกส่งต่อไปยังสายด่วน 1323
+        </p>
+        <div class="bg-slate-50 rounded-xl p-4 overflow-x-auto border border-slate-200/60">
+          <div class="mermaid">
+flowchart TB
+    subgraph UserSide ["ฝั่งผู้ใช้งาน (End User)"]
+        U["ผู้ใช้งานผ่านสมาร์ตโฟน"]
+        LINE_APP["แอปพลิเคชัน LINE Client"]
+        U <--> LINE_APP
+    end
+    subgraph LinePlatform ["แพลตฟอร์ม LINE Developer"]
+        LINE_GW["LINE Messaging API Gateway"]
+        LINE_APP <-->|"HTTPS Webhook & Reply API"| LINE_GW
+    end
+    subgraph BackendSystem ["ระบบเซิร์ฟเวอร์หลังบ้าน (Puijai Backend & AI Engine)"]
+        NGINX["NGNIX Reverse Proxy & SSL"]
+        FASTAPI["FastAPI Web Framework (Python 3.10)"]
+        SLIDING["Sliding Window Context Manager (K=3, L=128)"]
+        WANGCHAN["WangchanBERTa Inference Engine (ONNX/PyTorch)"]
+        DB[(PostgreSQL & SQLAlchemy Database)]
+        
+        LINE_GW <-->|"HTTPS POST /callback"| NGINX
+        NGINX <--> FASTAPI
+        FASTAPI <--> DB
+        FASTAPI --> SLIDING
+        SLIDING --> WANGCHAN
+        WANGCHAN --> FASTAPI
+    end
+    subgraph HealthDept ["ระบบส่งต่อความช่วยเหลือฉุกเฉิน"]
+        CALL_1323["สายด่วนสุขภาพจิต 1323 (Department of Mental Health)"]
+        LINE_APP -.->|"กดโทรออกฉุกเฉิน (tel:1323)"| CALL_1323
+    end
+          </div>
+        </div>
+      </div>
+
+      <!-- Fig 3.2 -->
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 overflow-hidden">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
+          <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200">
+            ภาพที่ 3.2 • บทที่ 3
+          </span>
+          <span class="text-xs text-slate-400">Functional Requirement Model</span>
+        </div>
+        <h3 class="text-lg font-bold text-slate-900 mb-2">
+          ภาพที่ 3.2: แผนภาพ Use Case Diagram การทำงานของระบบ
+        </h3>
+        <p class="text-slate-600 text-sm mb-6 content-font">
+          ขอบเขตกรณีการใช้งานระหว่างผู้ใช้ทั่วไป ระบบปัญญาประดิษฐ์หลังบ้าน และเจ้าหน้าที่สายด่วนสุขภาพจิต 1323
+        </p>
+        <div class="bg-slate-50 rounded-xl p-4 overflow-x-auto border border-slate-200/60">
+          <div class="mermaid">
+flowchart LR
+    User(("ผู้ใช้งานระบบ\n(End User)"))
+    subgraph PuijaiSystem ["ระบบแชทบอทปุยใจ (Puijai System Boundary)"]
+        UC1(["UC-01: ส่งข้อความระบายความรู้สึก"])
+        UC2(["UC-02: รับข้อความตอบกลับอัตโนมัติ"])
+        UC3(["UC-03: รับการประเมินความเสี่ยงและแจ้งเตือนฉุกเฉิน"])
+        UC4(["UC-04: กดปุ่มโทรออกสายด่วนสุขภาพจิต 1323"])
+    end
+    subgraph BackendAI ["ระบบหลังบ้านและโมเดล AI"]
+        UC5(["UC-05: จัดการหน้าต่างบริบท Sliding Window"])
+        UC6(["UC-06: จำแนกระดับความเสี่ยงด้วย WangchanBERTa"])
+        UC7(["UC-07: บันทึกข้อมูลและสถิติลงฐานข้อมูล"])
+    end
+    CallCenter(("เจ้าหน้าที่สายด่วน\n1323"))
+    User --> UC1
+    User --> UC2
+    User --> UC3
+    User --> UC4
+    UC1 -.->|"include"| UC5
+    UC5 -.->|"include"| UC6
+    UC6 -.->|"include"| UC7
+    UC4 --> CallCenter
+          </div>
+        </div>
+      </div>
+
+      <!-- Fig 3.3 -->
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 overflow-hidden">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
+          <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200">
+            ภาพที่ 3.3 • บทที่ 3
+          </span>
+          <span class="text-xs text-slate-400">Interaction & Latency Trace</span>
+        </div>
+        <h3 class="text-lg font-bold text-slate-900 mb-2">
+          ภาพที่ 3.3: ลำดับการทำงานเชิงเวลา (Sequence Diagram)
+        </h3>
+        <p class="text-slate-600 text-sm mb-6 content-font">
+          ขั้นตอนการประมวลผลเชิงเวลาตั้งแต่รับ Webhook, ดึงประวัติบริบท, ส่งโมเดลทำนาย จนถึงการยิง Flex Message แจ้งเตือน 1323
+        </p>
+        <div class="bg-slate-50 rounded-xl p-4 overflow-x-auto border border-slate-200/60">
+          <div class="mermaid">
+sequenceDiagram
+    autonumber
+    actor User as ผู้ใช้งาน (User)
+    participant LINE as LINE Platform
+    participant API as FastAPI Backend
+    participant DB as PostgreSQL DB
+    participant AI as WangchanBERTa Model
+    
+    User->>LINE: ส่งข้อความระบายความรู้สึก
+    LINE->>API: Webhook Event (ข้อความ, User ID)
+    API->>DB: บันทึกข้อความปัจจุบันลง chat_messages
+    API->>DB: ดึงประวัติการสนทนาย้อนหลัง K=3 รอบ
+    DB-->>API: คืนค่าข้อความย้อนหลัง
+    API->>API: รวมข้อความและตัดคำด้วย newmm (L=128)
+    API->>AI: ส่งบริบทเข้าโมเดลทำนายความเสี่ยง
+    AI-->>API: คืนค่าคลาสความเสี่ยง (ระดับ 0, 1 หรือ 2)
+    alt เป็นความเสี่ยงระดับ 2 (วิกฤต)
+        API->>DB: บันทึก Log วิกฤตลง crisis_detection_logs
+        API->>LINE: ส่ง Flex Message สีแดง พร้อมปุ่มโทร 1323
+        LINE->>User: แสดงการ์ดช่วยเหลือฉุกเฉินบนหน้าจอ
+    else เป็นระดับ 0 หรือ 1
+        API->>LINE: ส่งข้อความปลอบโยนหรือการ์ดสีเหลือง
+        LINE->>User: แสดงข้อความตอบกลับปกติ
+    end
+          </div>
+        </div>
+      </div>
+
+      <!-- Fig 3.4 -->
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 overflow-hidden">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
+          <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200">
+            ภาพที่ 3.4 • บทที่ 3
+          </span>
+          <span class="text-xs text-slate-400">Relational Schema (3NF)</span>
+        </div>
+        <h3 class="text-lg font-bold text-slate-900 mb-2">
+          ภาพที่ 3.4: แผนผังความสัมพันธ์เอนทิตีของฐานข้อมูล (ER Diagram)
+        </h3>
+        <p class="text-slate-600 text-sm mb-6 content-font">
+          โครงสร้างตารางฐานข้อมูล 4 ตารางหลัก ได้แก่ users, chat_messages, sliding_window_contexts และ crisis_detection_logs
+        </p>
+        <div class="bg-slate-50 rounded-xl p-4 overflow-x-auto border border-slate-200/60">
+          <div class="mermaid">
+erDiagram
+    USERS ||--o{ CHAT_MESSAGES : "sends"
+    USERS ||--o{ SLIDING_WINDOW_CONTEXTS : "has"
+    USERS ||--o{ CRISIS_DETECTION_LOGS : "triggers"
+    
+    USERS {
+        bigint user_id PK
+        varchar line_user_id UK
+        varchar display_name
+        timestamp created_at
+        timestamp updated_at
+    }
+    CHAT_MESSAGES {
+        bigint message_id PK
+        bigint user_id FK
+        text message_text
+        varchar sender_type
+        timestamp sent_at
+    }
+    SLIDING_WINDOW_CONTEXTS {
+        bigint context_id PK
+        bigint user_id FK
+        text combined_context_text
+        int token_length
+        int conversation_turns
+        timestamp updated_at
+    }
+    CRISIS_DETECTION_LOGS {
+        bigint log_id PK
+        bigint user_id FK
+        int predicted_class
+        float confidence_score
+        boolean flex_card_sent
+        timestamp detected_at
+    }
+          </div>
+        </div>
+      </div>
+
+      <!-- Fig 3.5 -->
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 overflow-hidden">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
+          <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200">
+            ภาพที่ 3.5 • บทที่ 3
+          </span>
+          <span class="text-xs text-slate-400">Quality Assurance Process</span>
+        </div>
+        <h3 class="text-lg font-bold text-slate-900 mb-2">
+          ภาพที่ 3.5: แผนผังกระบวนการทดสอบระบบตามมาตรฐาน IEEE 829
+        </h3>
+        <p class="text-slate-600 text-sm mb-6 content-font">
+          กระบวนการทดสอบฟังก์ชันและการจัดการบริบท 10 กรณีทดสอบ (TC-01 ถึง TC-10) ควบคุมคุณภาพโดยทีม QA
+        </p>
+        <div class="bg-slate-50 rounded-xl p-4 overflow-x-auto border border-slate-200/60">
+          <div class="mermaid">
+flowchart TD
+    A["1. กำหนดข้อกำหนดการทดสอบ (IEEE 829 Test Plan): ครอบคลุม 10 Test Cases"] --> B["2. เตรียมชุดข้อมูลทดสอบจำลอง (Synthetic Clinical Prompts): คำสแลง, คำลากเสียง, สำนวน"]
+    B --> C["3. รันการทดสอบอัตโนมัติ (Automated API Test Runner): ส่ง Request เข้า /webhook"]
+    C --> D["4. ตรวจสอบผลลัพธ์พยากรณ์และเปรียบเทียบกับ Ground Truth"]
+    D --> E{"ผลการทดสอบตรงตามเกณฑ์หรือไม่?"}
+    E --"ไม่ผ่าน"--> F["บันทึก Bug Report, ปรับแก้ฟังก์ชัน และรันซ้ำ"]
+    E --"ผ่าน (100%)"--> G["5. วัดเวลาตอบสนอง API Latency (ms) และจัดทำ Test Summary Report"]
+    F --> C
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Part 2: 3-Tier LINE Interactive UI Mockups -->
+  <section id="mockups" class="py-16 bg-slate-100/70 border-y border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="border-b border-slate-200 pb-5 mb-10">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-3">
+          <span class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center text-sm">2</span>
+          การจำลองหน้าจอแชทบอท LINE UI ตามระดับความเสี่ยง 3 ระดับ (3-Tier Interactive Mockups)
+        </h2>
+        <p class="text-slate-500 text-sm mt-1 content-font">
+          ต้นแบบการตอบสนองเชิงจิตวิทยาและ Trauma-Informed UX/UI Design แยกตามระดับ C-SSRS
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+        <!-- Tier 0: Normal -->
+        <div class="bg-white rounded-3xl shadow-md border border-slate-200 overflow-hidden flex flex-col">
+          <!-- Smartphone Header -->
+          <div class="bg-[#5B9BD5] p-4 text-white flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-chevron-left text-sm"></i>
+              <div class="w-8 h-8 rounded-full bg-white text-[#5B9BD5] font-bold flex items-center justify-center text-sm">
+                ป
+              </div>
+              <div>
+                <div class="font-bold text-sm">ปุยใจ (Puijai)</div>
+                <div class="text-[10px] text-sky-100 flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> พร้อมรับฟังเสมอ
+                </div>
+              </div>
+            </div>
+            <span class="bg-white/20 text-xs px-2 py-0.5 rounded-full font-medium">ระดับ 0 ปกติ</span>
+          </div>
+
+          <!-- Chat Body -->
+          <div class="bg-[#8CABD9]/10 p-4 space-y-4 flex-1 content-font text-sm">
+            <!-- User msg -->
+            <div class="flex justify-end">
+              <div class="bg-[#06C755] text-white p-3 rounded-2xl rounded-tr-none max-w-[85%] shadow-sm">
+                สวัสดีปุยใจ วันนี้รู้สึกเหนื่อยกับงานจัง แต่ยังไหวอยู่
+              </div>
+            </div>
+            <div class="text-[10px] text-right text-slate-400 -mt-2">14:20 น. • อ่านแล้ว</div>
+
+            <!-- Bot response -->
+            <div class="flex items-start gap-2">
+              <div class="w-7 h-7 rounded-full bg-[#5B9BD5] text-white font-bold flex items-center justify-center text-xs shrink-0 mt-1">
+                ป
+              </div>
+              <div class="bg-white text-slate-800 p-3 rounded-2xl rounded-tl-none max-w-[85%] shadow-sm border border-slate-100">
+                <p>สวัสดีครับคุณ วันนี้คงเหนื่อยมากจริงๆ นะครับ ปุยใจขอเป็นกำลังใจให้เสมอ พักดื่มน้ำ ล้างหน้า หรือยืดเส้นยืดสายสักครู่ไหมครับ ปุยใจพร้อมรับฟังคุณทุกเรื่องเลยนะ 💙</p>
+              </div>
+            </div>
+            <div class="text-[10px] text-slate-400 ml-9 -mt-2">14:20 น. • ตอบกลับปกติ</div>
+          </div>
+
+          <!-- Footer Badge -->
+          <div class="p-3 bg-sky-50 border-t border-sky-100 text-xs text-sky-800 font-medium text-center">
+            <i class="fa-solid fa-check-circle mr-1"></i> ระดับ 0: ข้อความสนทนาปลอบโยนทั่วไป
+          </div>
+        </div>
+
+        <!-- Tier 1: Warning / Early Risk -->
+        <div class="bg-white rounded-3xl shadow-md border border-slate-200 overflow-hidden flex flex-col">
+          <!-- Smartphone Header -->
+          <div class="bg-[#F59E0B] p-4 text-white flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-chevron-left text-sm"></i>
+              <div class="w-8 h-8 rounded-full bg-white text-[#F59E0B] font-bold flex items-center justify-center text-sm">
+                ป
+              </div>
+              <div>
+                <div class="font-bold text-sm">ปุยใจ (Puijai)</div>
+                <div class="text-[10px] text-amber-100 flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-white"></span> ดูแลใจใกล้ชิด
+                </div>
+              </div>
+            </div>
+            <span class="bg-white/20 text-xs px-2 py-0.5 rounded-full font-medium">ระดับ 1 เสี่ยงเริ่มต้น</span>
+          </div>
+
+          <!-- Chat Body -->
+          <div class="bg-amber-50/20 p-4 space-y-4 flex-1 content-font text-sm">
+            <!-- User msg -->
+            <div class="flex justify-end">
+              <div class="bg-[#06C755] text-white p-3 rounded-2xl rounded-tr-none max-w-[85%] shadow-sm">
+                รู้สึกตัวเองไม่มีค่าอะไรเลย ไม่อยากตื่นมาเจอพรุ่งนี้แล้ว
+              </div>
+            </div>
+            <div class="text-[10px] text-right text-slate-400 -mt-2">21:15 น. • อ่านแล้ว</div>
+
+            <!-- Bot response: Yellow Card -->
+            <div class="flex items-start gap-2">
+              <div class="w-7 h-7 rounded-full bg-[#F59E0B] text-white font-bold flex items-center justify-center text-xs shrink-0 mt-1">
+                ป
+              </div>
+              <div class="bg-white text-slate-800 rounded-2xl rounded-tl-none max-w-[90%] shadow-md border border-amber-200 overflow-hidden">
+                <div class="bg-amber-500 text-white px-3 py-2 font-bold text-xs flex items-center justify-between">
+                  <span>💛 การ์ดดูแลใจเป็นพิเศษ</span>
+                  <span class="text-[10px]">C-SSRS ระดับ 1</span>
+                </div>
+                <div class="p-3 space-y-2">
+                  <p class="font-semibold text-slate-900 text-xs">ปุยใจรับรู้ถึงความเจ็บปวดและความเหนื่อยล้าของคุณนะ</p>
+                  <p class="text-xs text-slate-600">คุณไม่ได้อยู่คนเดียวนะครับ ถ้าความรู้สึกนี้มันหนักเกินไป ลองทำแบบฝึกหายใจ 4-7-8 หรือระบายให้ปุยใจฟังเพิ่มได้เสมอเลยนะ</p>
+                  <div class="bg-amber-50 p-2 rounded-lg border border-amber-100 text-[11px] text-amber-800">
+                    <i class="fa-solid fa-heart mr-1"></i> ปุยใจจะอยู่เคียงข้างคุณตรงนี้เสมอ
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="text-[10px] text-slate-400 ml-9 -mt-2">21:15 น. • ส่งการ์ดสีเหลือง</div>
+          </div>
+
+          <!-- Footer Badge -->
+          <div class="p-3 bg-amber-50 border-t border-amber-100 text-xs text-amber-800 font-medium text-center">
+            <i class="fa-solid fa-triangle-exclamation mr-1"></i> ระดับ 1: การ์ดสีเหลือง ประคองอารมณ์
+          </div>
+        </div>
+
+        <!-- Tier 2: Acute Crisis -->
+        <div class="bg-white rounded-3xl shadow-md border border-slate-200 overflow-hidden flex flex-col ring-2 ring-red-400">
+          <!-- Smartphone Header -->
+          <div class="bg-[#EF4444] p-4 text-white flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-chevron-left text-sm"></i>
+              <div class="w-8 h-8 rounded-full bg-white text-[#EF4444] font-bold flex items-center justify-center text-sm">
+                ป
+              </div>
+              <div>
+                <div class="font-bold text-sm">ปุยใจ (Puijai)</div>
+                <div class="text-[10px] text-red-100 flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> โหมดฉุกเฉิน
+                </div>
+              </div>
+            </div>
+            <span class="bg-white/20 text-xs px-2 py-0.5 rounded-full font-medium">ระดับ 2 วิกฤต</span>
+          </div>
+
+          <!-- Chat Body -->
+          <div class="bg-red-50/20 p-4 space-y-4 flex-1 content-font text-sm">
+            <!-- User msg -->
+            <div class="flex justify-end">
+              <div class="bg-[#06C755] text-white p-3 rounded-2xl rounded-tr-none max-w-[85%] shadow-sm">
+                คืนนี้จะจบทุกอย่างแล้ว ลาก่อนนะทุกคน
+              </div>
+            </div>
+            <div class="text-[10px] text-right text-slate-400 -mt-2">02:45 น. • อ่านแล้ว</div>
+
+            <!-- Bot response: Red Flex Message -->
+            <div class="flex items-start gap-2">
+              <div class="w-7 h-7 rounded-full bg-[#EF4444] text-white font-bold flex items-center justify-center text-xs shrink-0 mt-1">
+                ป
+              </div>
+              <div class="bg-white text-slate-800 rounded-2xl rounded-tl-none max-w-[95%] shadow-lg border-2 border-red-500 overflow-hidden">
+                <!-- Flex Header -->
+                <div class="bg-[#EF4444] text-white p-3">
+                  <div class="font-extrabold text-sm flex items-center gap-1.5">
+                    <i class="fa-solid fa-triangle-exclamation"></i> ระบบช่วยเหลือฉุกเฉิน (Crisis Support)
+                  </div>
+                  <div class="text-[11px] text-red-100 mt-0.5">
+                    ปุยใจเป็นห่วงความปลอดภัยของคุณมากที่สุดนะครับ
+                  </div>
+                </div>
+                <!-- Flex Body -->
+                <div class="p-3 space-y-2.5">
+                  <p class="text-xs text-slate-700 leading-relaxed font-medium">
+                    เราอยากให้คุณได้รับความช่วยเหลือจากผู้เชี่ยวชาญที่พร้อมรับฟังคุณในตอนนี้ทันที โปรดให้โอกาสตัวเองอีกครั้งนะครับ
+                  </p>
+                  <div class="bg-red-50 p-2.5 rounded-xl border border-red-200 text-xs space-y-1">
+                    <div class="font-bold text-red-800">
+                      <i class="fa-solid fa-phone mr-1"></i> สายด่วนสุขภาพจิต 1323 (โทรฟรี 24 ชม.)
+                    </div>
+                    <div class="text-slate-600 text-[11px]">
+                      • สถาบันการแพทย์ฉุกเฉินแห่งชาติ: 1669
+                    </div>
+                  </div>
+                  <!-- Flex Buttons -->
+                  <div class="pt-1 space-y-2">
+                    <a href="tel:1323" class="block w-full py-2.5 bg-[#EF4444] hover:bg-red-600 text-white font-bold text-xs text-center rounded-xl shadow-md transition transform active:scale-95">
+                      <i class="fa-solid fa-phone-volume mr-1.5"></i> กดโทรสายด่วน 1323 ทันที (โทรฟรี)
+                    </a>
+                    <a href="tel:1669" class="block w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium text-xs text-center rounded-xl transition">
+                      <i class="fa-solid fa-truck-medical mr-1.5"></i> โทรสายด่วนการแพทย์ 1669
+                    </a>
+                  </div>
+                  <p class="text-[9px] text-slate-400 text-center italic">
+                    *ระบบปุยใจเป็นเครื่องมือคัดกรองเบื้องต้น ไม่ใช่การวินิจฉัยทางการแพทย์
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="text-[10px] text-slate-400 ml-9 -mt-2">02:45 น. • ส่งการ์ดสีแดง 1323 (126 ms)</div>
+          </div>
+
+          <!-- Footer Badge -->
+          <div class="p-3 bg-red-50 border-t border-red-100 text-xs text-red-800 font-bold text-center">
+            <i class="fa-solid fa-circle-radiation mr-1"></i> ระดับ 2: Flex Card สีแดง + ปุ่มโทร 1323
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Part 3: Interactive Data Visualization with Chart.js -->
+  <section id="charts" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="border-b border-slate-200 pb-5 mb-10">
+      <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-3">
+        <span class="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center text-sm">3</span>
+        กราฟวิเคราะห์ผลการวิจัยและประสิทธิภาพโมเดล (Chart.js Interactive Visualizations)
+      </h2>
+      <p class="text-slate-500 text-sm mt-1 content-font">
+        กราฟปฏิสัมพันธ์แสดงผลเปรียบเทียบโมเดล การทดลอง 9 รูปแบบ และตาราง Confusion Matrix
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+
+      <!-- Chart 4.1: Model Comparison Bar Chart -->
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+          <span class="text-xs font-bold text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200">
+            กราฟรูปที่ 4.1
+          </span>
+          <span class="text-xs text-slate-400">Baseline vs SVM vs WangchanBERTa</span>
+        </div>
+        <h3 class="text-base font-bold text-slate-900 mb-2">
+          เปรียบเทียบประสิทธิภาพโมเดลคัดกรองจุดเสี่ยงภาวะวิกฤต (Crisis Metrics)
+        </h3>
+        <p class="text-xs text-slate-500 content-font mb-4">
+          แสดงค่า Accuracy, Crisis Precision, Crisis Recall และ Crisis F1-Score (%)
+        </p>
+        <div class="relative flex-1 min-h-[300px]">
+          <canvas id="chartModelComparison"></canvas>
+        </div>
+        <div class="mt-4 p-3 bg-slate-50 rounded-xl text-xs text-slate-600 content-font">
+          <strong class="text-slate-800">สรุปผล:</strong> WangchanBERTa (K=3, L=128) ทำ Recall ได้ถึง <strong>96.50%</strong> ลดจำนวนเคสหลุดรอด (False Negative) จาก 85 เคส เหลือเพียง <strong>7 เคส</strong>
+        </div>
+      </div>
+
+      <!-- Chart 4.2: 3x3 Sliding Window Matrix Performance -->
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+          <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200">
+            กราฟรูปที่ 4.2
+          </span>
+          <span class="text-xs text-slate-400">Factorial 3x3 Evaluation</span>
+        </div>
+        <h3 class="text-base font-bold text-slate-900 mb-2">
+          ค่า Crisis F1-Score ของการทดลอง Sliding Window 9 รูปแบบ
+        </h3>
+        <p class="text-xs text-slate-500 content-font mb-4">
+          ความสัมพันธ์ระหว่างจำนวนรอบสนทนา (K = 1, 3, 5 รอบ) และเพดานโทเคน (L = 64, 128, 256 โทเคน)
+        </p>
+        <div class="relative flex-1 min-h-[300px]">
+          <canvas id="chartSlidingWindow"></canvas>
+        </div>
+        <div class="mt-4 p-3 bg-emerald-50 rounded-xl text-xs text-emerald-800 content-font border border-emerald-200">
+          <strong class="text-emerald-950">จุดเหมาะสมที่สุด (Optimal):</strong> Exp-5 (K=3 รอบ, L=128 โทเคน) ได้ Crisis F1-Score สูงสุด <strong>94.82%</strong> และประมวลผลเร็ว <strong>56.80 ms</strong>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Chart 4.3: Confusion Matrix Heatmap -->
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+        <span class="text-xs font-bold text-purple-700 bg-purple-50 px-3 py-1 rounded-full border border-purple-200">
+          กราฟรูปที่ 4.3
+        </span>
+        <span class="text-xs text-slate-400">Confusion Matrix (N = 600)</span>
+      </div>
+      <h3 class="text-base font-bold text-slate-900 mb-2">
+        ตารางกระจายผลทำนาย Confusion Matrix ของโมเดล WangchanBERTa (K=3, L=128)
+      </h3>
+      <p class="text-xs text-slate-500 content-font mb-6">
+        ชุดข้อมูลทดสอบ 600 ตัวอย่าง (แบ่งเท่ากันระดับละ 200 ตัวอย่าง)
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-5 text-center">
+          <div class="text-xs text-emerald-700 font-semibold mb-1">ระดับ 0 ปกติ (Normal)</div>
+          <div class="text-4xl font-extrabold text-emerald-600 mb-2">191 / 200</div>
+          <div class="text-xs text-slate-600 content-font">
+            ทำนายถูก 95.50% <br>
+            <span class="text-slate-400 text-[11px]">(ทายผิดเป็นระดับ 1 = 7, ระดับ 2 = 2)</span>
+          </div>
+        </div>
+
+        <div class="bg-amber-50 border border-amber-200 rounded-2xl p-5 text-center">
+          <div class="text-xs text-amber-700 font-semibold mb-1">ระดับ 1 เสี่ยงเริ่มต้น (Early Risk)</div>
+          <div class="text-4xl font-extrabold text-amber-600 mb-2">184 / 200</div>
+          <div class="text-xs text-slate-600 content-font">
+            ทำนายถูก 92.00% <br>
+            <span class="text-slate-400 text-[11px]">(ทายผิดเป็นระดับ 0 = 4, ระดับ 2 = 12)</span>
+          </div>
+        </div>
+
+        <div class="bg-red-50 border border-red-200 rounded-2xl p-5 text-center ring-2 ring-red-300">
+          <div class="text-xs text-red-700 font-semibold mb-1">ระดับ 2 วิกฤต (Crisis Risk)</div>
+          <div class="text-4xl font-extrabold text-red-600 mb-2">193 / 200</div>
+          <div class="text-xs text-slate-600 content-font">
+            ทำนายถูก <strong>96.50% (Recall)</strong> <br>
+            <span class="text-red-500 font-semibold text-[11px]">False Negative เพียง 7 เคส (3.50%)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Part 4: All Academic Tables -->
+  <section id="tables" class="py-16 bg-slate-100/60 border-t border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="border-b border-slate-200 pb-5 mb-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-3">
+            <span class="w-8 h-8 rounded-lg bg-sky-600 text-white flex items-center justify-center text-sm">4</span>
+            รวบรวมตารางวิจัยทั้งหมดในเล่มปริญญานิพนธ์ (ตารางที่ 1.1 ถึง 4.5)
+          </h2>
+          <p class="text-slate-500 text-sm mt-1 content-font">
+            ตารางวิจัยฉบับสมบูรณ์ จัดเรียงตามลำดับโครงสร้างเล่มมาตรฐาน PIM CEAI
+          </p>
+        </div>
+      </div>
+
+      <div class="space-y-12">
+
+        <!-- Table 1.1 -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+            <span class="text-xs font-bold text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200">ตารางที่ 1.1</span>
+            <span class="text-xs text-slate-400">บทที่ 1: แผนการดำเนินงานวิจัย</span>
+          </div>
+          <h3 class="text-base font-bold text-slate-900 mb-4">
+            ตารางที่ 1.1: แผนการดำเนินงานวิจัยและการแบ่งภาระงานตลอด 16 สัปดาห์ (ภาคการศึกษาที่ 1 ปีการศึกษา 2569 กลุ่มเรียน 1)
+          </h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm content-font border-collapse">
+              <thead>
+                <tr class="bg-slate-50 border-b border-slate-200 text-slate-700 font-semibold">
+                  <th class="py-3 px-4 text-center w-16">ลำดับ</th>
+                  <th class="py-3 px-4">กิจกรรมการดำเนินงานหลัก</th>
+                  <th class="py-3 px-4">ผู้รับผิดชอบหลัก</th>
+                  <th class="py-3 px-4 text-center">ช่วงเวลาดำเนินงาน</th>
+                  <th class="py-3 px-4 text-center">บทที่เกี่ยวข้อง</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 text-slate-600">
+                <tr class="hover:bg-slate-50/80"><td class="py-3 px-4 text-center font-medium">1</td><td class="py-3 px-4">ศึกษาปัญหาและกำหนดขอบเขตตามเกณฑ์ C-SSRS</td><td class="py-3 px-4 font-semibold text-slate-800">นายปภังกร และ นายศุภโชค</td><td class="py-3 px-4 text-center">สัปดาห์ที่ 1 ถึง 4</td><td class="py-3 px-4 text-center">บทที่ 1 และ 2</td></tr>
+                <tr class="hover:bg-slate-50/80"><td class="py-3 px-4 text-center font-medium">2</td><td class="py-3 px-4">วิเคราะห์ความต้องการ RTM และออกแบบฐานข้อมูล</td><td class="py-3 px-4 font-semibold text-indigo-700">นายปภังกร (BA & QA)</td><td class="py-3 px-4 text-center">สัปดาห์ที่ 3 ถึง 6</td><td class="py-3 px-4 text-center">บทที่ 3</td></tr>
+                <tr class="hover:bg-slate-50/80"><td class="py-3 px-4 text-center font-medium">3</td><td class="py-3 px-4">พัฒนาสถาปัตยกรรม Sliding Window และโมเดล WangchanBERTa</td><td class="py-3 px-4 font-semibold text-sky-700">นายศุภโชค (AI & Dev)</td><td class="py-3 px-4 text-center">สัปดาห์ที่ 5 ถึง 10</td><td class="py-3 px-4 text-center">บทที่ 3</td></tr>
+                <tr class="hover:bg-slate-50/80"><td class="py-3 px-4 text-center font-medium">4</td><td class="py-3 px-4">พัฒนาระบบ LINE Official Account และ FastAPI</td><td class="py-3 px-4 font-semibold text-sky-700">นายศุภโชค (AI & Dev)</td><td class="py-3 px-4 text-center">สัปดาห์ที่ 7 ถึง 12</td><td class="py-3 px-4 text-center">บทที่ 3</td></tr>
+                <tr class="hover:bg-slate-50/80"><td class="py-3 px-4 text-center font-medium">5</td><td class="py-3 px-4">ออกแบบและสร้าง UI Flex Message แจ้งเตือน 1323</td><td class="py-3 px-4 font-semibold text-indigo-700">นายปภังกร (BA & QA)</td><td class="py-3 px-4 text-center">สัปดาห์ที่ 9 ถึง 12</td><td class="py-3 px-4 text-center">บทที่ 3</td></tr>
+                <tr class="hover:bg-slate-50/80"><td class="py-3 px-4 text-center font-medium">6</td><td class="py-3 px-4">ดำเนินการทดสอบระบบตามมาตรฐาน IEEE 829 และ SUS</td><td class="py-3 px-4 font-semibold text-indigo-700">นายปภังกร (BA & QA)</td><td class="py-3 px-4 text-center">สัปดาห์ที่ 11 ถึง 14</td><td class="py-3 px-4 text-center">บทที่ 4</td></tr>
+                <tr class="hover:bg-slate-50/80"><td class="py-3 px-4 text-center font-medium">7</td><td class="py-3 px-4">ประเมินผลลัพธ์ วิเคราะห์สถิติ และจัดทำเล่มรายงานฉบับสมบูรณ์</td><td class="py-3 px-4 font-semibold text-slate-800">นายศุภโชค และ นายปภังกร</td><td class="py-3 px-4 text-center">สัปดาห์ที่ 13 ถึง 16</td><td class="py-3 px-4 text-center">บทที่ 4 และ 5</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Table 2.1 & 2.2 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+              <span class="text-xs font-bold text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200">ตารางที่ 2.1</span>
+              <span class="text-xs text-slate-400">บทที่ 2</span>
+            </div>
+            <h3 class="text-base font-bold text-slate-900 mb-4">
+              ตารางที่ 2.1: การเปรียบเทียบเกณฑ์มาตรฐาน C-SSRS เข้ากับระดับความเสี่ยงของระบบ
+            </h3>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-sm content-font border-collapse">
+                <thead>
+                  <tr class="bg-slate-50 border-b border-slate-200 text-slate-700 font-semibold">
+                    <th class="py-3 px-3">ระดับ C-SSRS</th>
+                    <th class="py-3 px-3">ระดับความเสี่ยงในระบบ</th>
+                    <th class="py-3 px-3">การตอบสนองของระบบ</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-slate-600">
+                  <tr class="hover:bg-slate-50/80"><td class="py-3 px-3 font-medium">ระดับ 0: ปกติ</td><td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700">0: ปกติ</span></td><td class="py-3 px-3">ตอบกลับปลอบโยนปกติ</td></tr>
+                  <tr class="hover:bg-slate-50/80"><td class="py-3 px-3 font-medium">ระดับ 1-2: มีความคิด</td><td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-700">1: เสี่ยงเริ่มต้น</span></td><td class="py-3 px-3">ส่งการ์ดสีเหลือง ประคองอารมณ์</td></tr>
+                  <tr class="hover:bg-slate-50/80"><td class="py-3 px-3 font-medium">ระดับ 3-5: มีแผน/เจตนา</td><td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-red-50 text-red-700">2: วิกฤต</span></td><td class="py-3 px-3">ส่งการ์ดสีแดง 1323 ทันที</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+              <span class="text-xs font-bold text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200">ตารางที่ 2.2</span>
+              <span class="text-xs text-slate-400">บทที่ 2</span>
+            </div>
+            <h3 class="text-base font-bold text-slate-900 mb-4">
+              ตารางที่ 2.2: โครงสร้างตาราง Confusion Matrix สำหรับประเมินโมเดล
+            </h3>
+            <div class="overflow-x-auto">
+              <table class="w-full text-center text-sm content-font border-collapse">
+                <thead>
+                  <tr class="bg-slate-50 border-b border-slate-200 text-slate-700 font-semibold">
+                    <th class="py-3 px-3 text-left">สถานะจริง \ ทำนาย</th>
+                    <th class="py-3 px-3">ทำนายว่าวิกฤต</th>
+                    <th class="py-3 px-3">ทำนายว่าไม่วิกฤต</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-slate-600">
+                  <tr class="hover:bg-slate-50/80"><td class="py-3 px-3 text-left font-medium">วิกฤตจริง</td><td class="py-3 px-3 font-bold text-emerald-600">True Positive (TP)</td><td class="py-3 px-3 font-bold text-red-600 bg-red-50/50">False Negative (FN) ⚠️</td></tr>
+                  <tr class="hover:bg-slate-50/80"><td class="py-3 px-3 text-left font-medium">ไม่วิกฤตจริง</td><td class="py-3 px-3 font-bold text-amber-600">False Positive (FP)</td><td class="py-3 px-3 font-bold text-emerald-600">True Negative (TN)</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table 4.1 -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+            <span class="text-xs font-bold text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200">ตารางที่ 4.1</span>
+            <span class="text-xs text-slate-400">บทที่ 4: เปรียบเทียบประสิทธิภาพ</span>
+          </div>
+          <h3 class="text-base font-bold text-slate-900 mb-4">
+            ตารางที่ 4.1: ผลการเปรียบเทียบประสิทธิภาพระหว่าง Baseline, TF-IDF+SVM และ WangchanBERTa (N=600)
+          </h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm content-font border-collapse">
+              <thead>
+                <tr class="bg-slate-50 border-b border-slate-200 text-slate-700 font-semibold">
+                  <th class="py-3 px-4">อัลกอริทึมที่ใช้ทดสอบ</th>
+                  <th class="py-3 px-4 text-center">Accuracy รวม</th>
+                  <th class="py-3 px-4 text-center">Crisis Precision</th>
+                  <th class="py-3 px-4 text-center">Crisis Recall</th>
+                  <th class="py-3 px-4 text-center">Crisis F1-Score</th>
+                  <th class="py-3 px-4 text-center">False Negative (จาก 200)</th>
+                  <th class="py-3 px-4 text-center">อัตรา FNR</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 text-slate-600">
+                <tr class="hover:bg-slate-50/80"><td class="py-3 px-4 font-medium">1. Baseline Keyword Matching (ระบบเดิม)</td><td class="py-3 px-4 text-center">64.50%</td><td class="py-3 px-4 text-center">71.88%</td><td class="py-3 px-4 text-center text-red-600 font-semibold">57.50%</td><td class="py-3 px-4 text-center">63.89%</td><td class="py-3 px-4 text-center text-red-600 font-bold">85 เคส</td><td class="py-3 px-4 text-center text-red-600">42.50%</td></tr>
+                <tr class="hover:bg-slate-50/80"><td class="py-3 px-4 font-medium">2. PyThaiNLP newmm + TF-IDF + SVM</td><td class="py-3 px-4 text-center">81.33%</td><td class="py-3 px-4 text-center">83.67%</td><td class="py-3 px-4 text-center">82.00%</td><td class="py-3 px-4 text-center">82.83%</td><td class="py-3 px-4 text-center">36 เคส</td><td class="py-3 px-4 text-center">18.00%</td></tr>
+                <tr class="bg-emerald-50/60 font-semibold text-slate-900 border-l-4 border-emerald-500"><td class="py-3 px-4">3. WangchanBERTa + newmm (K=3, L=128)</td><td class="py-3 px-4 text-center text-emerald-700 font-bold">94.67%</td><td class="py-3 px-4 text-center text-emerald-700 font-bold">93.20%</td><td class="py-3 px-4 text-center text-emerald-700 font-bold">96.50%</td><td class="py-3 px-4 text-center text-emerald-700 font-bold">94.82%</td><td class="py-3 px-4 text-center text-emerald-700 font-bold">7 เคส</td><td class="py-3 px-4 text-center text-emerald-700 font-bold">3.50%</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Table 4.2 -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+            <span class="text-xs font-bold text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200">ตารางที่ 4.2</span>
+            <span class="text-xs text-slate-400">บทที่ 4: ผลการทดลอง Factorial 3x3</span>
+          </div>
+          <h3 class="text-base font-bold text-slate-900 mb-4">
+            ตารางที่ 4.2: ผลการทดลองวิเคราะห์ความสัมพันธ์ระหว่าง Conversation Turns (K) และ Token Length (L) ทั้ง 9 รูปแบบ
+          </h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm content-font border-collapse">
+              <thead>
+                <tr class="bg-slate-50 border-b border-slate-200 text-slate-700 font-semibold">
+                  <th class="py-3 px-4 text-center">รหัสการทดลอง</th>
+                  <th class="py-3 px-4">พารามิเตอร์ (K รอบ, L โทเคน)</th>
+                  <th class="py-3 px-4 text-center">Crisis Recall</th>
+                  <th class="py-3 px-4 text-center">Crisis F1-Score</th>
+                  <th class="py-3 px-4 text-center">เวลาประมวลผลโมเดล</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 text-slate-600">
+                <tr class="hover:bg-slate-50/80"><td class="py-2.5 px-4 text-center font-mono text-xs">Exp-1</td><td class="py-2.5 px-4">K = 1 รอบ, L = 64 โทเคน</td><td class="py-2.5 px-4 text-center">78.50%</td><td class="py-2.5 px-4 text-center">82.43%</td><td class="py-2.5 px-4 text-center">38.40 ms</td></tr>
+                <tr class="hover:bg-slate-50/80"><td class="py-2.5 px-4 text-center font-mono text-xs">Exp-2</td><td class="py-2.5 px-4">K = 1 รอบ, L = 128 โทเคน</td><td class="py-2.5 px-4 text-center">80.00%</td><td class="py-2.5 px-4 text-center">83.77%</td><td class="py-2.5 px-4 text-center">45.20 ms</td></tr>
+                <tr class="hover:bg-slate-50/80"><td class="py-2.5 px-4 text-center font-mono text-xs">Exp-3</td><td class="py-2.5 px-4">K = 1 รอบ, L = 256 โทเคน</td><td class="py-2.5 px-4 text-center">80.50%</td><td class="py-2.5 px-4 text-center">84.10%</td><td class="py-2.5 px-4 text-center">68.90 ms</td></tr>
+                <tr class="hover:bg-slate-50/80"><td class="py-2.5 px-4 text-center font-mono text-xs">Exp-4</td><td class="py-2.5 px-4">K = 3 รอบ, L = 64 โทเคน</td><td class="py-2.5 px-4 text-center">89.00%</td><td class="py-2.5 px-4 text-center">90.13%</td><td class="py-2.5 px-4 text-center">44.10 ms</td></tr>
+                <tr class="bg-emerald-50/70 font-semibold text-slate-900 border-l-4 border-emerald-500"><td class="py-2.5 px-4 text-center font-mono text-xs font-bold text-emerald-800">Exp-5 (Optimal)</td><td class="py-2.5 px-4 font-bold text-emerald-900">K = 3 รอบ, L = 128 โทเคน</td><td class="py-2.5 px-4 text-center font-bold text-emerald-700">96.50%</td><td class="py-2.5 px-4 text-center font-bold text-emerald-700">94.82%</td><td class="py-2.5 px-4 text-center font-bold text-emerald-700">56.80 ms</td></tr>
+                <tr class="hover:bg-slate-50/80"><td class="py-2.5 px-4 text-center font-mono text-xs">Exp-6</td><td class="py-2.5 px-4">K = 3 รอบ, L = 256 โทเคน</td><td class="py-2.5 px-4 text-center">96.00%</td><td class="py-2.5 px-4 text-center">94.35%</td><td class="py-2.5 px-4 text-center">89.40 ms</td></tr>
+                <tr class="hover:bg-slate-50/80"><td class="py-2.5 px-4 text-center font-mono text-xs">Exp-7</td><td class="py-2.5 px-4">K = 5 รอบ, L = 64 โทเคน</td><td class="py-2.5 px-4 text-center">86.50%</td><td class="py-2.5 px-4 text-center">88.26%</td><td class="py-2.5 px-4 text-center">48.50 ms</td></tr>
+                <tr class="hover:bg-slate-50/80"><td class="py-2.5 px-4 text-center font-mono text-xs">Exp-8</td><td class="py-2.5 px-4">K = 5 รอบ, L = 128 โทเคน</td><td class="py-2.5 px-4 text-center">92.50%</td><td class="py-2.5 px-4 text-center">91.13%</td><td class="py-2.5 px-4 text-center">64.30 ms</td></tr>
+                <tr class="hover:bg-slate-50/80"><td class="py-2.5 px-4 text-center font-mono text-xs">Exp-9</td><td class="py-2.5 px-4">K = 5 รอบ, L = 256 โทเคน</td><td class="py-2.5 px-4 text-center">90.00%</td><td class="py-2.5 px-4 text-center">88.67%</td><td class="py-2.5 px-4 text-center">112.70 ms</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Table 4.4 -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+            <span class="text-xs font-bold text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200">ตารางที่ 4.4</span>
+            <span class="text-xs text-slate-400">บทที่ 4: การทดสอบระบบตามมาตรฐาน IEEE 829</span>
+          </div>
+          <h3 class="text-base font-bold text-slate-900 mb-4">
+            ตารางที่ 4.4: ผลการทดสอบฟังก์ชันการทำงานตามมาตรฐาน IEEE 829 ทั้ง 10 กรณี และเวลาตอบสนองรวมของระบบ
+          </h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm content-font border-collapse">
+              <thead>
+                <tr class="bg-slate-50 border-b border-slate-200 text-slate-700 font-semibold">
+                  <th class="py-3 px-3 text-center">รหัสทดสอบ</th>
+                  <th class="py-3 px-3">สถานการณ์ทดสอบย่อ</th>
+                  <th class="py-3 px-3">คลาสพยากรณ์และความน่าจะเป็น</th>
+                  <th class="py-3 px-3 text-center">เวลาตอบสนองรวม</th>
+                  <th class="py-3 px-3 text-center">การส่งการ์ดและผลลัพธ์</th>
+                  <th class="py-3 px-3 text-center">สถานะ</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 text-slate-600">
+                <tr class="hover:bg-slate-50/80"><td class="py-2.5 px-3 text-center font-bold font-mono text-xs text-slate-700">TC-01</td><td class="py-2.5 px-3">ทักทายชีวิตประจำวันทั่วไป</td><td class="py-2.5 px-3">ระดับ 0 ปกติ (0.992)</td><td class="py-2.5 px-3 text-center font-mono text-xs">118.40 ms</td><td class="py-2.5 px-3 text-center">ข้อความปกติ</td><td class="py-2.5 px-3 text-center"><span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">PASS</span></td></tr>
+                <tr class="hover:bg-slate-50/80"><td class="py-2.5 px-3 text-center font-bold font-mono text-xs text-slate-700">TC-02</td><td class="py-2.5 px-3">สำนวนเปรียบเปรย การบ้านยากจะตาย</td><td class="py-2.5 px-3">ระดับ 0 ปกติ (0.964)</td><td class="py-2.5 px-3 text-center font-mono text-xs">134.20 ms</td><td class="py-2.5 px-3 text-center">ข้อความปกติ</td><td class="py-2.5 px-3 text-center"><span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">PASS</span></td></tr>
+                <tr class="hover:bg-slate-50/80"><td class="py-2.5 px-3 text-center font-bold font-mono text-xs text-slate-700">TC-03</td><td class="py-2.5 px-3">คำสแลงบริบทตลก ขำจนจะตุย</td><td class="py-2.5 px-3">ระดับ 0 ปกติ (0.958)</td><td class="py-2.5 px-3 text-center font-mono text-xs">129.50 ms</td><td class="py-2.5 px-3 text-center">ข้อความปกติ</td><td class="py-2.5 px-3 text-center"><span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">PASS</span></td></tr>
+                <tr class="hover:bg-slate-50/80"><td class="py-2.5 px-3 text-center font-bold font-mono text-xs text-amber-700">TC-04</td><td class="py-2.5 px-3">ความเสี่ยงเริ่มต้น รู้สึกตัวเองไร้ค่า</td><td class="py-2.5 px-3">ระดับ 1 เสี่ยงเริ่มต้น (0.941)</td><td class="py-2.5 px-3 text-center font-mono text-xs">138.70 ms</td><td class="py-2.5 px-3 text-center font-semibold text-amber-700">ส่งการ์ดสีเหลือง</td><td class="py-2.5 px-3 text-center"><span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">PASS</span></td></tr>
+                <tr class="hover:bg-slate-50/80"><td class="py-2.5 px-3 text-center font-bold font-mono text-xs text-amber-700">TC-05</td><td class="py-2.5 px-3">คำลากเสียง ไม่อยากตื่นมาเจอพรุ่งนี้</td><td class="py-2.5 px-3">ระดับ 1 เสี่ยงเริ่มต้น (0.915)</td><td class="py-2.5 px-3 text-center font-mono text-xs">145.10 ms</td><td class="py-2.5 px-3 text-center font-semibold text-amber-700">ส่งการ์ดสีเหลือง</td><td class="py-2.5 px-3 text-center"><span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">PASS</span></td></tr>
+                <tr class="hover:bg-slate-50/80"><td class="py-2.5 px-3 text-center font-bold font-mono text-xs text-red-700">TC-06</td><td class="py-2.5 px-3">วิกฤตประโยคเดียว อยากฆ่าตัวตาย</td><td class="py-2.5 px-3">ระดับ 2 วิกฤต (0.996)</td><td class="py-2.5 px-3 text-center font-mono text-xs">126.80 ms</td><td class="py-2.5 px-3 text-center font-bold text-red-600">ส่งการ์ดสีแดง 1323</td><td class="py-2.5 px-3 text-center"><span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">PASS</span></td></tr>
+                <tr class="hover:bg-slate-50/80"><td class="py-2.5 px-3 text-center font-bold font-mono text-xs text-red-700">TC-07</td><td class="py-2.5 px-3">วิกฤตคำสแลง ขอลาไปสู่ขิตถาวร</td><td class="py-2.5 px-3">ระดับ 2 วิกฤต (0.973)</td><td class="py-2.5 px-3 text-center font-mono text-xs">141.30 ms</td><td class="py-2.5 px-3 text-center font-bold text-red-600">ส่งการ์ดสีแดง 1323</td><td class="py-2.5 px-3 text-center"><span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">PASS</span></td></tr>
+                <tr class="hover:bg-slate-50/80"><td class="py-2.5 px-3 text-center font-bold font-mono text-xs text-red-700">TC-08</td><td class="py-2.5 px-3">วิกฤตสะสม 3 รอบ ยกของรักและบอกลา</td><td class="py-2.5 px-3">ระดับ 2 วิกฤต (0.962)</td><td class="py-2.5 px-3 text-center font-mono text-xs">154.60 ms</td><td class="py-2.5 px-3 text-center font-bold text-red-600">ส่งการ์ดสีแดง 1323</td><td class="py-2.5 px-3 text-center"><span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">PASS</span></td></tr>
+                <tr class="hover:bg-slate-50/80"><td class="py-2.5 px-3 text-center font-bold font-mono text-xs text-red-700">TC-09</td><td class="py-2.5 px-3">ข้อความยาว 180 โทเคน ตัดเหลือ 128</td><td class="py-2.5 px-3">ระดับ 2 วิกฤต (0.948)</td><td class="py-2.5 px-3 text-center font-mono text-xs">172.90 ms</td><td class="py-2.5 px-3 text-center font-bold text-red-600">ส่งการ์ดสีแดง 1323</td><td class="py-2.5 px-3 text-center"><span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">PASS</span></td></tr>
+                <tr class="hover:bg-slate-50/80"><td class="py-2.5 px-3 text-center font-bold font-mono text-xs text-sky-700">TC-10</td><td class="py-2.5 px-3">กดปุ่มโทร 1323 และตรวจฐานข้อมูล</td><td class="py-2.5 px-3">โทรออก 1323 และบันทึก Log</td><td class="py-2.5 px-3 text-center font-mono text-xs">164.50 ms</td><td class="py-2.5 px-3 text-center font-bold text-emerald-600">บันทึก Log วิกฤต</td><td class="py-2.5 px-3 text-center"><span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">PASS</span></td></tr>
+                <tr class="bg-emerald-50/70 font-semibold text-slate-900 border-t-2 border-slate-300"><td class="py-3 px-3 text-center font-bold text-emerald-800">สรุปผล</td><td class="py-3 px-3 font-bold text-emerald-800">ผ่านครบ 10 กรณีทดสอบ (100%)</td><td class="py-3 px-3">ความมั่นใจเฉลี่ย 0.961</td><td class="py-3 px-3 text-center font-bold text-emerald-800">เฉลี่ย 142.60 ms</td><td class="py-3 px-3 text-center font-bold text-emerald-800">ทำงานถูกต้อง 100%</td><td class="py-3 px-3 text-center"><span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-600 text-white shadow-sm">PASS (10/10)</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Table 4.5 -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+            <span class="text-xs font-bold text-sky-700 bg-sky-50 px-3 py-1 rounded-full border border-sky-200">ตารางที่ 4.5</span>
+            <span class="text-xs text-slate-400">บทที่ 4: แบบประเมิน SUS 30 คน</span>
+          </div>
+          <h3 class="text-base font-bold text-slate-900 mb-4">
+            ตารางที่ 4.5: ผลการประเมินความยากง่ายในการใช้งานด้วยแบบวัด System Usability Scale (SUS) จากผู้ใช้งาน 30 คน
+          </h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm content-font border-collapse">
+              <thead>
+                <tr class="bg-slate-50 border-b border-slate-200 text-slate-700 font-semibold">
+                  <th class="py-3 px-3 text-center w-14">ข้อที่</th>
+                  <th class="py-3 px-4">ประเด็นคำถามประเมินการใช้งาน (SUS)</th>
+                  <th class="py-3 px-3 text-center">ทิศทาง</th>
+                  <th class="py-3 px-3 text-center">คะแนนดิบเฉลี่ย (S.D.)</th>
+                  <th class="py-3 px-3 text-center">คะแนนปรับฐาน (เต็ม 4.00)</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 text-slate-600">
+                <tr class="hover:bg-slate-50/80"><td class="py-2 px-3 text-center font-medium">1</td><td class="py-2 px-4">ตั้งใจจะกลับมาใช้งานแชทบอทปุยใจอย่างสม่ำเสมอ</td><td class="py-2 px-3 text-center text-xs text-emerald-600 font-medium">เชิงบวก</td><td class="py-2 px-3 text-center">4.43 (0.57)</td><td class="py-2 px-3 text-center font-semibold">3.43</td></tr>
+                <tr class="hover:bg-slate-50/80"><td class="py-2 px-3 text-center font-medium">2</td><td class="py-2 px-4">รู้สึกว่าระบบมีความซับซ้อนเกินความจำเป็น</td><td class="py-2 px-3 text-center text-xs text-slate-400 font-medium">เชิงลบ</td><td class="py-2 px-3 text-center">1.53 (0.63)</td><td class="py-2 px-3 text-center font-semibold">3.47</td></tr>
+                <tr class="hover:bg-slate-50/80"><td class="py-2 px-3 text-center font-medium">3</td><td class="py-2 px-4">การใช้งานแชทและการกดปุ่มบนการ์ดทำได้ง่าย</td><td class="py-2 px-3 text-center text-xs text-emerald-600 font-medium">เชิงบวก</td><td class="py-2 px-3 text-center">4.67 (0.48)</td><td class="py-2 px-3 text-center font-semibold">3.67</td></tr>
+                <tr class="hover:bg-slate-50/80"><td class="py-2 px-3 text-center font-medium">4</td><td class="py-2 px-4">จำเป็นต้องได้รับความช่วยเหลือจากผู้อื่นก่อนเริ่มใช้</td><td class="py-2 px-3 text-center text-xs text-slate-400 font-medium">เชิงลบ</td><td class="py-2 px-3 text-center">1.40 (0.56)</td><td class="py-2 px-3 text-center font-semibold">3.60</td></tr>
+                <tr class="hover:bg-slate-50/80"><td class="py-2 px-3 text-center font-medium">5</td><td class="py-2 px-4">ฟังก์ชันการทำงานเชื่อมโยงเป็นอันหนึ่งอันเดียวกัน</td><td class="py-2 px-3 text-center text-xs text-emerald-600 font-medium">เชิงบวก</td><td class="py-2 px-3 text-center">4.33 (0.61)</td><td class="py-2 px-3 text-center font-semibold">3.33</td></tr>
+                <tr class="hover:bg-slate-50/80"><td class="py-2 px-3 text-center font-medium">6</td><td class="py-2 px-4">ระบบมีความไม่สอดคล้องกันในการตอบกลับ</td><td class="py-2 px-3 text-center text-xs text-slate-400 font-medium">เชิงลบ</td><td class="py-2 px-3 text-center">1.70 (0.70)</td><td class="py-2 px-3 text-center font-semibold">3.30</td></tr>
+                <tr class="hover:bg-slate-50/80"><td class="py-2 px-3 text-center font-medium">7</td><td class="py-2 px-4">คนส่วนใหญ่จะเรียนรู้วิธีใช้งานได้อย่างรวดเร็ว</td><td class="py-2 px-3 text-center text-xs text-emerald-600 font-medium">เชิงบวก</td><td class="py-2 px-3 text-center">4.50 (0.51)</td><td class="py-2 px-3 text-center font-semibold">3.50</td></tr>
+                <tr class="hover:bg-slate-50/80"><td class="py-2 px-3 text-center font-medium">8</td><td class="py-2 px-4">การใช้งานระบบมีความเทอะทะและไม่สะดวก</td><td class="py-2 px-3 text-center text-xs text-slate-400 font-medium">เชิงลบ</td><td class="py-2 px-3 text-center">1.73 (0.69)</td><td class="py-2 px-3 text-center font-semibold">3.27</td></tr>
+                <tr class="hover:bg-slate-50/80"><td class="py-2 px-3 text-center font-medium">9</td><td class="py-2 px-4">รู้สึกมั่นใจและปลอดภัยเมื่อใช้งานและเห็นการ์ด 1323</td><td class="py-2 px-3 text-center text-xs text-emerald-600 font-medium">เชิงบวก</td><td class="py-2 px-3 text-center">4.37 (0.61)</td><td class="py-2 px-3 text-center font-semibold">3.37</td></tr>
+                <tr class="hover:bg-slate-50/80"><td class="py-2 px-3 text-center font-medium">10</td><td class="py-2 px-4">ต้องเรียนรู้สิ่งต่างๆ จำนวนมากก่อนเริ่มต้นใช้งาน</td><td class="py-2 px-3 text-center text-xs text-slate-400 font-medium">เชิงลบ</td><td class="py-2 px-3 text-center">1.63 (0.67)</td><td class="py-2 px-3 text-center font-semibold">3.37</td></tr>
+                <tr class="bg-amber-50/70 font-semibold text-slate-900 border-t-2 border-slate-300"><td colspan="2" class="py-3 px-4 text-center font-bold text-amber-900">สรุปคะแนนรวม SUS Score = 33.70 × 2.5 = 84.25 คะแนน</td><td colspan="3" class="py-3 px-4 text-center font-bold text-emerald-800">ระดับดีเยี่ยม (Grade A / Excellent) • ผ่านเกณฑ์มาตรฐานอุตสาหกรรม (> 68 คะแนน)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 text-white py-12 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center content-font">
+      <div class="inline-flex items-center gap-2 mb-4 text-sky-400 font-semibold text-sm">
+        <i class="fa-solid fa-code-branch"></i> ปริญญานิพนธ์วิศวกรรมคอมพิวเตอร์และปัญญาประดิษฐ์ • PIM CEAI 1321205
+      </div>
+      <p class="text-sm text-slate-400 max-w-2xl mx-auto mb-4">
+        การพัฒนาระบบตรวจจับจุดเสี่ยงภาวะวิกฤตจากบริบทข้อความสนทนาภาษาไทยด้วยโมเดล WangchanBERTa สำหรับแชทบอทปุยใจบนแพลตฟอร์ม LINE
+      </p>
+      <div class="text-xs text-slate-500">
+        คณะวิศวกรรมศาสตร์และเทคโนโลยี สถาบันการจัดการปัญญาภิวัฒน์ • ภาคการศึกษา 1 ปีการศึกษา 2569 กลุ่มเรียน 1
+      </div>
+    </div>
+  </footer>
+
+  <!-- Chart Scripts & Mermaid Initialization -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Initialize Mermaid
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis'
+        }
+      });
+
+      // Chart 4.1: Model Comparison
+      const ctx1 = document.getElementById('chartModelComparison').getContext('2d');
+      new Chart(ctx1, {
+        type: 'bar',
+        data: {
+          labels: ['Accuracy รวม', 'Crisis Precision', 'Crisis Recall (ความระลึก)', 'Crisis F1-Score'],
+          datasets: [
+            {
+              label: '1. Baseline Keyword Matching',
+              data: [64.50, 71.88, 57.50, 63.89],
+              backgroundColor: 'rgba(239, 68, 68, 0.7)',
+              borderColor: 'rgb(239, 68, 68)',
+              borderWidth: 1,
+              borderRadius: 6
+            },
+            {
+              label: '2. TF-IDF + SVM',
+              data: [81.33, 83.67, 82.00, 82.83],
+              backgroundColor: 'rgba(245, 158, 11, 0.7)',
+              borderColor: 'rgb(245, 158, 11)',
+              borderWidth: 1,
+              borderRadius: 6
+            },
+            {
+              label: '3. WangchanBERTa (K=3, L=128)',
+              data: [94.67, 93.20, 96.50, 94.82],
+              backgroundColor: 'rgba(16, 185, 129, 0.85)',
+              borderColor: 'rgb(16, 185, 129)',
+              borderWidth: 1,
+              borderRadius: 6
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'bottom', labels: { font: { family: 'Prompt', size: 11 } } },
+            tooltip: {
+              callbacks: {
+                label: function(context) { return context.dataset.label + ': ' + context.parsed.y + '%'; }
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 100,
+              ticks: { callback: function(value) { return value + '%'; }, font: { family: 'Prompt' } }
+            },
+            x: {
+              ticks: { font: { family: 'Prompt' } }
+            }
+          }
+        }
+      });
+
+      // Chart 4.2: Sliding Window Matrix
+      const ctx2 = document.getElementById('chartSlidingWindow').getContext('2d');
+      new Chart(ctx2, {
+        type: 'line',
+        data: {
+          labels: ['L=64 โทเคน', 'L=128 โทเคน', 'L=256 โทเคน'],
+          datasets: [
+            {
+              label: 'K = 1 รอบสนทนา',
+              data: [82.43, 83.77, 84.10],
+              borderColor: 'rgb(148, 163, 184)',
+              backgroundColor: 'rgba(148, 163, 184, 0.2)',
+              borderWidth: 2,
+              pointRadius: 5,
+              tension: 0.2
+            },
+            {
+              label: 'K = 3 รอบสนทนา (เหมาะสมที่สุด)',
+              data: [90.13, 94.82, 94.35],
+              borderColor: 'rgb(16, 185, 129)',
+              backgroundColor: 'rgba(16, 185, 129, 0.2)',
+              borderWidth: 3,
+              pointRadius: 7,
+              pointBackgroundColor: 'rgb(16, 185, 129)',
+              tension: 0.2
+            },
+            {
+              label: 'K = 5 รอบสนทนา',
+              data: [88.26, 91.13, 88.67],
+              borderColor: 'rgb(99, 102, 241)',
+              backgroundColor: 'rgba(99, 102, 241, 0.2)',
+              borderWidth: 2,
+              pointRadius: 5,
+              tension: 0.2
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'bottom', labels: { font: { family: 'Prompt', size: 11 } } },
+            tooltip: {
+              callbacks: {
+                label: function(context) { return context.dataset.label + ': ' + context.parsed.y + '%'; }
+              }
+            }
+          },
+          scales: {
+            y: {
+              min: 75,
+              max: 98,
+              ticks: { callback: function(value) { return value + '%'; }, font: { family: 'Prompt' } }
+            },
+            x: {
+              ticks: { font: { family: 'Prompt' } }
+            }
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
