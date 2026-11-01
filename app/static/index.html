@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PuijaiRiskNLP — ระบบตรวจจับจุดเสี่ยงแชทบอทปุยใจ (CEAI Senior Project)</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --line-bg: #8cabd9;
+      --line-green: #06c755;
+      --line-user: #a8f08f;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --normal: #10b981;
+      --warning: #f59e0b;
+      --critical: #ef4444;
+      --primary: #2563eb;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    header {
+      background: linear-gradient(135deg, #0f172a, #1e3a8a);
+      color: #fff;
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+    }
+    header h1 { font-size: 1.2rem; font-weight: 700; }
+    header p { font-size: 0.82rem; color: #cbd5e1; }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      background: rgba(255,255,255,0.1);
+      padding: 8px 14px;
+      border-radius: 10px;
+    }
+    .controls label { font-size: 0.8rem; color: #e2e8f0; display: flex; align-items: center; gap: 6px; }
+    .controls select, .controls input[type="number"] {
+      padding: 5px 8px;
+      border-radius: 6px;
+      border: 1px solid #475569;
+      background: #0f172a;
+      color: #fff;
+      font-size: 0.82rem;
+    }
+    .container {
+      max-width: 1400px;
+      margin: 20px auto;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 980px) {
+      .container { grid-template-columns: 1fr; }
+    }
+    .card {
+      background: var(--card);
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 12px rgba(15,23,42,0.04);
+      overflow: hidden;
+    }
+    /* LINE Simulator */
+    .line-window {
+      display: flex;
+      flex-direction: column;
+      height: 760px;
+    }
+    .line-header {
+      background: #232c3d;
+      color: #fff;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .line-header .title { font-weight: 600; font-size: 0.96rem; display: flex; align-items: center; gap: 8px; }
+    .status-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--line-green); display: inline-block; }
+    .btn-reset {
+      background: #334155;
+      color: #fff;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      cursor: pointer;
+    }
+    .btn-reset:hover { background: #475569; }
+    .preset-bar {
+      background: #f8fafc;
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .preset-btn {
+      font-size: 0.74rem;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid #cbd5e1;
+      background: #fff;
+      cursor: pointer;
+      color: #334155;
+      transition: all 0.15s;
+    }
+    .preset-btn:hover { background: #eff6ff; border-color: #60a5fa; color: #1d4ed8; }
+    .chat-feed {
+      flex: 1;
+      background: var(--line-bg);
+      padding: 14px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .msg-row { display: flex; gap: 8px; align-items: flex-end; max-width: 88%; }
+    .msg-row.user { align-self: flex-end; flex-direction: row-reverse; }
+    .avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: #fff; color: #1e3a8a; font-weight: 700; font-size: 0.8rem;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .bubble {
+      background: #fff;
+      padding: 9px 13px;
+      border-radius: 14px;
+      font-size: 0.88rem;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+      word-break: break-word;
+    }
+    .msg-row.user .bubble { background: var(--line-user); }
+    .msg-badge {
+      font-size: 0.68rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #fff;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .bg-NORMAL { background: var(--normal); }
+    .bg-WARNING { background: var(--warning); }
+    .bg-CRITICAL { background: var(--critical); }
+    /* Flex Emergency Card inside LINE */
+    .flex-card {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      width: 260px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      border-top: 4px solid var(--critical);
+    }
+    .flex-body { padding: 12px; }
+    .flex-body h4 { font-size: 0.92rem; color: #1e293b; margin-bottom: 4px; }
+    .flex-body p { font-size: 0.78rem; color: #64748b; }
+    .flex-footer { padding: 0 12px 12px; display: flex; flex-direction: column; gap: 6px; }
+    .flex-btn {
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      padding: 7px 10px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: #e2e8f0;
+      color: #1e293b;
+    }
+    .flex-btn.primary { background: #dc2626; color: #fff; }
+    .chat-input {
+      display: flex;
+      padding: 10px;
+      background: #fff;
+      border-top: 1px solid var(--border);
+      gap: 8px;
+    }
+    .chat-input input {
+      flex: 1;
+      padding: 9px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      outline: none;
+    }
+    .chat-input button {
+      background: var(--line-green);
+      color: #fff;
+      border: none;
+      padding: 0 18px;
+      border-radius: 20px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    /* Right Panel */
+    .right-col { display: flex; flex-direction: column; gap: 18px; }
+    .section-card { padding: 18px 20px; }
+    .section-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .kpi-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+    .kpi-box .label { font-size: 0.74rem; color: var(--muted); }
+    .kpi-box .val { font-size: 1.15rem; font-weight: 700; margin-top: 2px; }
+    .prob-row { margin-bottom: 8px; }
+    .prob-head { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 3px; }
+    .prob-track { height: 10px; background: #e2e8f0; border-radius: 999px; overflow: hidden; }
+    .prob-fill { height: 100%; transition: width 0.3s ease; }
+    .token-box {
+      background: #f8fafc;
+      border: 1px dashed #cbd5e1;
+      padding: 10px 12px;
+      border-radius: 8px;
+      min-height: 46px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      margin-top: 8px;
+    }
+    .token-chip {
+      background: #e2e8f0;
+      color: #1e293b;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+    }
+    .token-chip.sep { background: #1e293b; color: #fff; font-weight: 700; }
+    .token-chip.evidence {
+      background: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #f87171;
+      font-weight: 700;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      margin-top: 8px;
+    }
+    th, td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+    th { background: #f1f5f9; font-weight: 600; color: #334155; }
+    td:first-child, th:first-child { text-align: left; font-weight: 600; }
+    .sub-tabs { display: flex; gap: 6px; }
+    .tab-btn {
+      font-size: 0.76rem;
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      cursor: pointer;
+    }
+    .tab-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>PuijaiRiskNLP — ระบบตรวจจับจุดเสี่ยงภาวะวิกฤตจากบริบทสนทนาภาษาไทย (แชทบอทปุยใจ)</h1>
+      <p>โครงงานวิศวกรรมคอมพิวเตอร์และปัญญาประดิษฐ์ | ตัดคำ PyThaiNLP (newmm) + Sliding Context Window + Explainable AI</p>
+    </div>
+    <div class="controls">
+      <label>
+        โมเดล (Model):
+        <select id="modelSelect">
+          <option value="wangchanberta">WangchanBERTa (Fine-tuned)</option>
+          <option value="tfidf">TF-IDF + Logistic Regression</option>
+          <option value="keyword">Keyword Baseline (วิธีเดิม)</option>
+        </select>
+      </label>
+      <label>
+        บริบทสะสม (N ข้อความ):
+        <select id="nTurnsSelect">
+          <option value="1">N = 1 (เฉพาะข้อความล่าสุด)</option>
+          <option value="3" selected>N = 3 ข้อความล่าสุด</option>
+          <option value="5">N = 5 ข้อความล่าสุด</option>
+        </select>
+      </label>
+      <label>
+        Critical Threshold:
+        <input type="number" id="threshInput" value="0.35" min="0.10" max="0.90" step="0.05" style="width:68px;" />
+      </label>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Left: LINE Chat Simulator -->
+    <div class="card line-window">
+      <div class="line-header">
+        <div class="title"><span class="status-dot"></span> แชทบอทปุยใจ (LINE Simulator)</div>
+        <button class="btn-reset" onclick="resetSession()">ล้างแชท / เริ่มบทสนทนาใหม่</button>
+      </div>
+      <div class="preset-bar">
+        <button class="preset-btn" onclick="sendPreset('วันนี้ไปเที่ยวทะเลกับเพื่อนมา สนุกมากเลย')">1. ข้อความปกติ</button>
+        <button class="preset-btn" onclick="sendPreset('การบ้านเยอะมาก หิวจะตายแล้วเนี่ย')">2. สำนวนเปรียบเปรย ("หิวจะตาย")</button>
+        <button class="preset-btn" onclick="sendPreset('ช่วงนี้รู้สึกท้อแท้ เหนื่อยและไร้ค่ามากเลย')">3. เริ่มมีสัญญาณเสี่ยง (Warning)</button>
+        <button class="preset-btn" onclick="sendPreset('ไม่อยากอยู่แล้ว อยากหายไปจากโลกนี้')">4. จุดวิกฤต (Critical 1323)</button>
+      </div>
+      <div class="chat-feed" id="chatFeed">
+        <div class="msg-row">
+          <div class="avatar">ปุยใจ</div>
+          <div class="bubble">สวัสดีครับ ปุยใจพร้อมรับฟังเรื่องราวของคุณเสมอนะ วันนี้เป็นอย่างไรบ้าง เล่าให้ปุยใจฟังได้เลยนะครับ 🌱</div>
+        </div>
+      </div>
+      <form class="chat-input" onsubmit="handleSend(event)">
+        <input type="text" id="msgInput" placeholder="พิมพ์ข้อความภาษาไทยเพื่อทดสอบการจับจุดเสี่ยง..." autocomplete="off" />
+        <button type="submit">ส่ง</button>
+      </form>
+    </div>
+
+    <!-- Right: Engineering & AI Risk Inspector -->
+    <div class="right-col">
+      <div class="card section-card">
+        <div class="section-title">
+          <span>1. ผลการวิเคราะห์จุดเสี่ยงแบบเรียลไทม์ (Real-Time Risk Assessment)</span>
+          <span id="activeModelBadge" style="font-size:0.78rem; color:var(--primary); font-weight:600;">Model: -</span>
+        </div>
+        <div class="kpi-grid">
+          <div class="kpi-box">
+            <div class="label">ระดับความเสี่ยง (Risk Level)</div>
+            <div class="val" id="kpiLevel">NORMAL (0)</div>
+          </div>
+          <div class="kpi-box">
+            <div class="label">จำนวนข้อความใน Window (N)</div>
+            <div class="val" id="kpiTurns">0 ข้อความ</div>
+          </div>
+          <div class="kpi-box">
+            <div class="label">จำนวนคำรวม (PyThaiNLP Tokens)</div>
+            <div class="val" id="kpiTokens">0 คำ</div>
+          </div>
+          <div class="kpi-box">
+            <div class="label">เวลาประมวลผล (Inference Latency)</div>
+            <div class="val" id="kpiLatency">0 ms</div>
+          </div>
+        </div>
+
+        <div class="prob-row">
+          <div class="prob-head"><span>Level 0: NORMAL (ปกติ)</span><span id="probNormalTxt">0.0%</span></div>
+          <div class="prob-track"><div class="prob-fill bg-NORMAL" id="probNormalBar" style="width:0%"></div></div>
+        </div>
+        <div class="prob-row">
+          <div class="prob-head"><span>Level 1: WARNING (เฝ้าระวังซึมเศร้า/ท้อแท้)</span><span id="probWarnTxt">0.0%</span></div>
+          <div class="prob-track"><div class="prob-fill bg-WARNING" id="probWarnBar" style="width:0%"></div></div>
+        </div>
+        <div class="prob-row">
+          <div class="prob-head"><span>Level 2: CRITICAL (จุดวิกฤต — แจ้งเตือนสายด่วน 1323)</span><span id="probCritTxt">0.0%</span></div>
+          <div class="prob-track"><div class="prob-fill bg-CRITICAL" id="probCritBar" style="width:0%"></div></div>
+        </div>
+
+        <div style="margin-top:14px;">
+          <div style="font-size:0.82rem; font-weight:600; color:#334155;">
+            การตัดคำใน Sliding Window และคำที่เป็นเหตุผลของจุดเสี่ยง (Explainable AI Evidence สีแดง):
+          </div>
+          <div class="token-box" id="tokenBox">
+            <span style="font-size:0.8rem; color:var(--muted);">ยังไม่มีข้อความ — ลองพิมพ์หรือกดปุ่มตัวอย่างด้านซ้าย</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card section-card">
+        <div class="section-title">
+          <span>2. ตารางผลการทดลองสำหรับเล่มโครงงาน บทที่ 4 (Experimental Evaluation)</span>
+          <div class="sub-tabs">
+            <button class="tab-btn active" onclick="switchExpTab('summary', this)">Exp.0 เปรียบเทียบ 3 โมเดล</button>
+            <button class="tab-btn" onclick="switchExpTab('exp1', this)">Exp.1 ความยาวจำนวนคำ</button>
+            <button class="tab-btn" onclick="switchExpTab('exp2', this)">Exp.2 จำนวนข้อความสะสม (N & ERDE)</button>
+          </div>
+        </div>
+        <div id="expTableContainer">กำลังโหลดข้อมูลผลการทดลอง...</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SESSION_USER = "demo-web-user";
+    let expData = null;
+    let currentTab = "summary";
+
+    async function initDashboard() {
+      const mRes = await fetch("/models").then(r => r.json());
+      const sel = document.getElementById("modelSelect");
+      for (const opt of sel.options) {
+        if (!mRes.available[opt.value]) {
+          opt.text += " (ยังไม่ได้เทรน)";
+        }
+      }
+      if (mRes.available.wangchanberta) {
+        sel.value = "wangchanberta";
+      } else {
+        sel.value = mRes.active || "keyword";
+      }
+      expData = await fetch("/experiments").then(r => r.json());
+      renderExpTable();
+    }
+
+    function sendPreset(text) {
+      document.getElementById("msgInput").value = text;
+      document.querySelector(".chat-input").dispatchEvent(new Event("submit"));
+    }
+
+    async function resetSession() {
+      await fetch("/session/clear", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: SESSION_USER })
+      });
+      document.getElementById("chatFeed").innerHTML = `
+        <div class="msg-row">
+          <div class="avatar">ปุยใจ</div>
+          <div class="bubble">ล้างประวัติบทสนทนาแล้วครับ เริ่มต้นพูดคุยใหม่ได้เลยนะ 🌱</div>
+        </div>`;
+      document.getElementById("tokenBox").innerHTML = `<span style="font-size:0.8rem; color:var(--muted);">ล้าง Sliding Window เรียบร้อยแล้ว</span>`;
+    }
+
+    async function handleSend(e) {
+      e.preventDefault();
+      const input = document.getElementById("msgInput");
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = "";
+
+      appendUserBubble(text);
+
+      const payload = {
+        text,
+        user_id: SESSION_USER,
+        classifier: document.getElementById("modelSelect").value,
+        n_turns: parseInt(document.getElementById("nTurnsSelect").value, 10),
+        critical_threshold: parseFloat(document.getElementById("threshInput").value)
+      };
+
+      const res = await fetch("/predict", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }).then(r => r.json());
+
+      appendBotReply(res.risk, res.action);
+      updateInspector(res);
+    }
+
+    function appendUserBubble(text) {
+      const feed = document.getElementById("chatFeed");
+      const div = document.createElement("div");
+      div.className = "msg-row user";
+      div.innerHTML = `<div class="bubble">${escapeHtml(text)}</div>`;
+      feed.appendChild(div);
+      feed.scrollTop = feed.scrollHeight;
+    }
+
+    function appendBotReply(risk, action) {
+      const feed = document.getElementById("chatFeed");
+      const row = document.createElement("div");
+      row.className = "msg-row";
+      row.innerHTML = `
+        <div class="avatar">ปุยใจ</div>
+        <div class="bubble">${escapeHtml(action.reply_text)}</div>
+        <span class="msg-badge bg-${risk.label}">${risk.label}</span>
+      `;
+      feed.appendChild(row);
+
+      if (action.show_crisis_card) {
+        const cardRow = document.createElement("div");
+        cardRow.className = "msg-row";
+        cardRow.innerHTML = `
+          <div class="avatar">1323</div>
+          <div class="flex-card">
+            <div class="flex-body">
+              <h4>คุณไม่ได้อยู่คนเดียวนะ</h4>
+              <p>มีผู้เชี่ยวชาญพร้อมรับฟังคุณตลอด 24 ชั่วโมง ฟรี และเป็นความลับ</p>
+            </div>
+            <div class="flex-footer">
+              <a class="flex-btn primary" href="tel:1323">📞 โทรสายด่วนสุขภาพจิต 1323</a>
+              <a class="flex-btn" href="tel:027136793">สมาคมสะมาริตันส์ 02-713-6793</a>
+              <a class="flex-btn" href="tel:1669">เหตุฉุกเฉิน 1669</a>
+            </div>
+          </div>`;
+        feed.appendChild(cardRow);
+      }
+      feed.scrollTop = feed.scrollHeight;
+    }
+
+    function updateInspector(res) {
+      const { risk, latency_ms, tokens, classifier } = res;
+      document.getElementById("activeModelBadge").textContent = `Model: ${classifier.toUpperCase()}`;
+      const lvlEl = document.getElementById("kpiLevel");
+      lvlEl.textContent = `${risk.label} (${risk.level})`;
+      lvlEl.style.color = risk.label === "CRITICAL" ? "var(--critical)" : (risk.label === "WARNING" ? "var(--warning)" : "var(--normal)");
+
+      document.getElementById("kpiTurns").textContent = `${risk.n_turns} ข้อความ`;
+      document.getElementById("kpiTokens").textContent = `${risk.n_tokens} คำ`;
+      document.getElementById("kpiLatency").textContent = `${latency_ms} ms`;
+
+      const pN = (risk.probabilities.NORMAL * 100).toFixed(1);
+      const pW = (risk.probabilities.WARNING * 100).toFixed(1);
+      const pC = (risk.probabilities.CRITICAL * 100).toFixed(1);
+      document.getElementById("probNormalTxt").textContent = `${pN}%`;
+      document.getElementById("probNormalBar").style.width = `${pN}%`;
+      document.getElementById("probWarnTxt").textContent = `${pW}%`;
+      document.getElementById("probWarnBar").style.width = `${pW}%`;
+      document.getElementById("probCritTxt").textContent = `${pC}%`;
+      document.getElementById("probCritBar").style.width = `${pC}%`;
+
+      const evSet = new Set(risk.evidence || []);
+      const box = document.getElementById("tokenBox");
+      box.innerHTML = tokens.map(tok => {
+        if (tok === "|") return `<span class="token-chip sep">| (แบ่งข้อความ)</span>`;
+        const isEv = evSet.has(tok) || [...evSet].some(e => e.includes(tok) || tok.includes(e));
+        return `<span class="token-chip ${isEv ? 'evidence' : ''}">${escapeHtml(tok)}</span>`;
+      }).join("");
+    }
+
+    function switchExpTab(tab, btn) {
+      currentTab = tab;
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      renderExpTable();
+    }
+
+    function renderExpTable() {
+      const el = document.getElementById("expTableContainer");
+      if (!expData) return;
+
+      if (currentTab === "summary") {
+        const rows = expData.summary || [];
+        if (!rows.length) {
+          el.innerHTML = "<p>ยังไม่มีข้อมูลตารางสรุป</p>";
+          return;
+        }
+        el.innerHTML = `
+          <table>
+            <thead>
+              <tr>
+                <th>โมเดล (Model)</th>
+                <th>N ข้อความ</th>
+                <th>คำเฉลี่ย/Window</th>
+                <th>Macro-F1</th>
+                <th>Recall (CRITICAL)</th>
+                <th>F1 (CRITICAL)</th>
+                <th>ERDE₅ (ต่ำ=ดี)</th>
+                <th>Latency (ms)</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows.map(r => `
+                <tr>
+                  <td>${r.model}</td>
+                  <td>${r.n_turns}</td>
+                  <td>${r.avg_tokens}</td>
+                  <td>${r.macro_f1}</td>
+                  <td style="font-weight:700; color:#dc2626;">${r.critical_recall}</td>
+                  <td>${r.critical_f1}</td>
+                  <td>${r.erde_5}</td>
+                  <td>${r.latency_ms || '-'}</td>
+                </tr>`).join("")}
+            </tbody>
+          </table>`;
+      } else if (currentTab === "exp1") {
+        const m = document.getElementById("modelSelect").value;
+        const rows = (expData.exp1 && expData.exp1[m]) || [];
+        el.innerHTML = `
+          <div style="font-size:0.8rem; color:var(--muted); margin-bottom:4px;">ผลการทดลองที่ 1 (แบ่งกลุ่มตามจำนวนคำในข้อความ) ของโมเดล: <b>${m}</b></div>
+          <table>
+            <thead>
+              <tr>
+                <th>ความยาวข้อความ (คำ)</th>
+                <th>จำนวนตัวอย่าง (n)</th>
+                <th>Accuracy</th>
+                <th>Macro-F1</th>
+                <th>Recall (CRITICAL)</th>
+                <th>Recall (WARNING)</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows.map(r => `
+                <tr>
+                  <td>${r.bucket} คำ</td>
+                  <td>${r.n}</td>
+                  <td>${r.accuracy || '-'}</td>
+                  <td>${r.macro_f1 || '-'}</td>
+                  <td>${r.critical_recall || '-'}</td>
+                  <td>${r.warning_recall || '-'}</td>
+                </tr>`).join("")}
+            </tbody>
+          </table>`;
+      } else {
+        const m = document.getElementById("modelSelect").value;
+        const rows = (expData.exp2 && expData.exp2[m]) || [];
+        el.innerHTML = `
+          <div style="font-size:0.8rem; color:var(--muted); margin-bottom:4px;">ผลการทดลองที่ 2 (เปลี่ยนจำนวนข้อความสะสม N = 1, 3, 5) ของโมเดล: <b>${m}</b></div>
+          <table>
+            <thead>
+              <tr>
+                <th>N (ข้อความสะสม)</th>
+                <th>จำนวนคำเฉลี่ย</th>
+                <th>Macro-F1</th>
+                <th>Recall (CRITICAL)</th>
+                <th>ERDE₅</th>
+                <th>ERDE₅₀</th>
+                <th>Latency (ms)</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows.map(r => `
+                <tr>
+                  <td>N = ${r.n_turns}</td>
+                  <td>${r.avg_tokens} คำ</td>
+                  <td>${r.macro_f1}</td>
+                  <td style="font-weight:700; color:#dc2626;">${r.critical_recall}</td>
+                  <td>${r.erde_5}</td>
+                  <td>${r.erde_50}</td>
+                  <td>${r.latency_ms || '-'}</td>
+                </tr>`).join("")}
+            </tbody>
+          </table>`;
+      }
+    }
+
+    document.getElementById("modelSelect").addEventListener("change", renderExpTable);
+
+    function escapeHtml(s) {
+      return (s || "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    }
+
+    initDashboard();
+  </script>
+</body>
+</html>
+

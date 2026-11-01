@@ -1,0 +1,9 @@
+# --- App + tests (ไม่ต้องใช้ torch, รันบนเครื่องได้) ---
+fastapi>=0.115
+uvicorn[standard]>=0.30
+pydantic>=2.7
+pydantic-settings>=2.3
+httpx>=0.27
+pythainlp>=5.0
+pytest>=8.0
+

@@ -1,0 +1,19 @@
+sequenceDiagram
+    participant U as ผู้ใช้
+    participant L as LINE
+    participant A as FastAPI
+    participant S as Session Store
+    participant M as RiskClassifier
+    participant P as Safety Policy
+    U->>L: พิมพ์ข้อความ
+    L->>A: POST /callback (X-Line-Signature)
+    A->>A: ตรวจลายเซ็น HMAC-SHA256
+    A->>S: append(hash(userId), text)
+    S-->>A: N ข้อความล่าสุด
+    A->>M: predict_windows(window)
+    M-->>A: RiskResult (level, probabilities)
+    A->>P: decide_action(result)
+    P-->>A: SafetyAction
+    A->>L: reply (text + Flex การ์ดถ้าวิกฤต)
+    L-->>U: ข้อความตอบกลับ
+

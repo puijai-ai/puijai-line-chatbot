@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+
+# Secrets
+.env
+
+# Data (ข้อมูลอ่อนไหว — ห้าม commit)
+data/raw/
+data/processed/
+
+# Models & results
+models/
+results/
+*.joblib
+*.safetensors
+*.bin
+
+# Notebooks
+.ipynb_checkpoints/
+

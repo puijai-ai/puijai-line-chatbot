@@ -1,0 +1,14 @@
+flowchart LR
+    U["ผู้ใช้ LINE"] -->|"ข้อความ"| L["LINE Platform"]
+    L -->|"Webhook + Signature"| API["FastAPI /callback"]
+    P["ปุยใจเดิม"] -->|"POST /predict"| API
+    API --> S["Session Store - N ข้อความล่าสุด"]
+    S --> W["Sliding Window Builder"]
+    W --> C{"RiskClassifier"}
+    C -->|"ช่วงแรก"| K["Keyword Baseline"]
+    C -->|"หลังเทรน"| B["Fine-tuned WangchanBERTa"]
+    C --> SP["Safety Policy"]
+    SP -->|"Level 0 ปกติ"| R1["ปุยใจคุยต่อตามปกติ"]
+    SP -->|"Level 1 เฝ้าระวัง"| R2["ข้อความประคับประคอง + ชวนทำ 2Q"]
+    SP -->|"Level 2 วิกฤต"| R3["Flex การ์ด โทร 1323 + แจ้งผู้ดูแล"]
+
