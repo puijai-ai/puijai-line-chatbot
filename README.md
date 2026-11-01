@@ -1,7 +1,18 @@
-# PuijaiRiskNLP — ระบบตรวจจับจุดเสี่ยงสำหรับแชทบอทปุยใจ
+# PuijaiRiskNLP — ระบบตรวจจับจุดเสี่ยงภาวะวิกฤตแชทบอทปุยใจ
 
-> การพัฒนาโมเดลตรวจจับจุดเสี่ยงจากข้อความภาษาไทยด้วย WangchanBERTa สำหรับแชทบอทปุยใจบน LINE
-> *Thai Text Crisis Risk Detection Model Using WangchanBERTa for the Puijai LINE Chatbot*
+> **การพัฒนาระบบตรวจจับจุดเสี่ยงภาวะวิกฤตจากบริบทข้อความสนทนาภาษาไทยด้วยโมเดล WangchanBERTa สำหรับแชทบอทปุยใจบนแพลตฟอร์ม LINE**  
+> *(Development of a Thai Contextual Crisis Risk Detection System Using WangchanBERTa for the Puijai LINE Chatbot)*  
+> **รายวิชา:** 1321205 โครงงานวิศวกรรมคอมพิวเตอร์และปัญญาประดิษฐ์ 1 (PIM)  
+> **ภาคการศึกษา:** 1 | **ปีการศึกษา:** 2569 | **กลุ่มเรียน:** 1  
+
+### 👥 คณะผู้จัดทำ (Project Members)
+1. **นายศุภโชค ชมภูพื้น** (รหัสนักศึกษา: **6752300852**) — AI & Backend Developer
+2. **นายปภังกร มณีรอด** (รหัสนักศึกษา: **6752301158**) — Business Analyst, UX/UI & QA Engineer
+
+### 🧑‍🏫 อาจารย์ที่ปรึกษาโครงงาน (Project Advisor)
+* **อาจารย์ สาธิดา สุขพงษ์**
+
+---
 
 ## ภาพรวม
 ```
