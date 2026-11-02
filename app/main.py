@@ -32,8 +32,8 @@ from puijai_risk.safety.policy import SafetyAction, decide_action
 from puijai_risk.schemas import RiskLevel, RiskResult
 from puijai_risk.windowing import Window, build_window
 
-from .line_handler import reply_message, verify_signature
-from .messages import build_reply_messages
+from .line_handler import push_message, reply_message, verify_signature
+from .messages import build_reply_messages, crisis_flex_message, warning_flex_message
 from .session_store import InMemorySessionStore, hash_user_id
 
 logger = logging.getLogger("puijai.app")
@@ -226,10 +226,61 @@ def create_app(settings: Settings | None = None, classifier: RiskClassifier | No
             message = event.get("message") or {}
             if event.get("type") != "message" or message.get("type") != "text":
                 continue
-            user_hash = hash_user_id(event.get("source", {}).get("userId", "anonymous"), s.user_id_salt)
-            turns = app.state.sessions.append(user_hash, message.get("text", ""))
-            result, action, _, _, _ = await assess(turns)
-            await reply_message(event["replyToken"], build_reply_messages(action), s.line_channel_access_token)
+
+            raw_user_id = event.get("source", {}).get("userId", "anonymous")
+            user_hash = hash_user_id(raw_user_id, s.user_id_salt)
+            reply_token = event.get("replyToken")
+
+            # 1. Deduplication: ตรวจสอบและข้าม Event ซ้ำที่ LINE ส่งเบิ้ล
+            if reply_token and app.state.sessions.is_token_processed(reply_token):
+                logger.info("Dropping duplicate event for token: %s", reply_token[:8])
+                continue
+
+            # 2. Rate Limiting: ป้องกัน DoS หรือสแปมโมเดลถี่เกินไป (ขั้นต่ำ 1 วินาทีต่อข้อความ)
+            if app.state.sessions.is_rate_limited(user_hash, min_seconds=1.0):
+                logger.warning("Rate limit exceeded for user: %s (throttling)", user_hash[:12])
+                continue
+
+            # 3. Sliding Window History
+            text_content = message.get("text", "")
+            turns = app.state.sessions.append(user_hash, text_content)
+
+            # 4. Model Inference
+            result, action, _, latency_ms, clf_name = await assess(turns)
+            logger.info(
+                "Inference complete: user=%s clf=%s level=%s latency=%.2fms",
+                user_hash[:12],
+                clf_name,
+                result.level.name,
+                latency_ms,
+            )
+
+            # 5. Escalation Velocity Tracker: ป้องกันผู้ใช้ติดลูปความเสี่ยงระดับ 1 (Level 1 Stuck Loop)
+            if result.level == RiskLevel.WARNING:
+                lvl1_count = app.state.sessions.increment_level1(user_hash)
+                if lvl1_count >= 3:
+                    logger.warning(
+                        "User %s stuck in Level 1 warning loop (%d consecutive turns). Escalating crisis intervention.",
+                        user_hash[:12],
+                        lvl1_count,
+                    )
+                    action.show_crisis_card = True
+            else:
+                app.state.sessions.reset_level1(user_hash)
+
+            # 6. LINE Reply with Fallback to Push Message for Crisis Safety
+            reply_success = False
+            if reply_token:
+                reply_success = await reply_message(
+                    reply_token, build_reply_messages(action), s.line_channel_access_token
+                )
+                app.state.sessions.mark_token_processed(reply_token)
+
+            # หากส่งผ่าน Reply Token ล้มเหลว (เช่น Token หมดอายุ) และเป็นเคสวิกฤต ให้สลับไปยิง Push ทันที
+            if not reply_success and action.show_crisis_card and raw_user_id != "anonymous":
+                logger.warning("Reply token failed for crisis message. Fallback to Push API for %s", user_hash[:12])
+                await push_message(raw_user_id, [crisis_flex_message()], s.line_channel_access_token)
+
             if action.notify_staff:
                 notify_staff(user_hash, result)
         return {"status": "ok"}

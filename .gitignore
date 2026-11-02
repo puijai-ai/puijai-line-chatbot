@@ -12,6 +12,8 @@ venv/
 # Data (ข้อมูลอ่อนไหว — ห้าม commit)
 data/raw/
 data/processed/
+*.db
+data/*.db
 
 # Models & results
 models/
