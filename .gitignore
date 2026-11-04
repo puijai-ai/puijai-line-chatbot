@@ -25,3 +25,22 @@ results/
 # Notebooks
 .ipynb_checkpoints/
 
+
+# Editor & agent configs
+.agents/
+.augment/
+.claude/
+.codebuddy/
+.codewhale/
+.continue/
+.cursor/
+.factory/
+.gemini/
+.kilocode/
+.kiro/
+.opencode/
+.qoder/
+.roo/
+.trae/
+.warp/
+.windsurf/

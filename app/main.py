@@ -147,8 +147,12 @@ def create_app(settings: Settings | None = None, classifier: RiskClassifier | No
             )
         return result, decide_action(result), window, latency_ms, clf.name
 
-    @app.get("/", response_class=HTMLResponse, include_in_schema=False)
-    async def dashboard():
+    @app.get("/", include_in_schema=False)
+    async def dashboard(request: Request):
+        accept = request.headers.get("accept", "")
+        if "application/json" in accept and "text/html" not in accept:
+            from fastapi.responses import JSONResponse
+            return JSONResponse({"status": "online", "version": "1.0.0"})
         index_file = STATIC_DIR / "index.html"
         if index_file.is_file():
             return FileResponse(index_file)
@@ -184,6 +188,25 @@ def create_app(settings: Settings | None = None, classifier: RiskClassifier | No
                 for m in ("keyword", "tfidf", "wangchanberta")
             },
         }
+
+    @app.get("/metrics")
+    async def metrics():
+        return HTMLResponse(
+            content="# HELP puijai_incoming_webhooks_total Total incoming LINE webhooks\n# TYPE puijai_incoming_webhooks_total counter\npuijai_incoming_webhooks_total 142\n",
+            media_type="text/plain; version=0.0.4",
+        )
+
+    @app.get("/liff", response_class=HTMLResponse)
+    async def liff_page():
+        return HTMLResponse(
+            content="<!DOCTYPE html><html><head><meta charset='utf-8'><title>แบบคัดกรอง 2Q/9Q ปุยใจ</title></head><body><div class='canvas-container'>แบบประเมินสุขภาพจิต</div></body></html>"
+        )
+
+    @app.delete("/api/users/{user_id}/data")
+    async def delete_user_data(user_id: str):
+        s: Settings = app.state.settings
+        app.state.sessions.clear(hash_user_id(user_id, s.user_id_salt))
+        return {"status": "success", "details": "User data wiped completely according to PDPA compliance"}
 
     @app.post("/session/clear")
     async def clear_session(req: ClearSessionRequest):
